@@ -8,7 +8,7 @@ import MatchModule from './MatchModule'
 
 import VuexPersist from 'vuex-persist'
 const vuexPersist = new VuexPersist({
-  key: 'GaaScoreTracker',
+  key: 'CroTransactionTracker',
   storage: localStorage
 })
 

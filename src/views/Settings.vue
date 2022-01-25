@@ -33,7 +33,7 @@
         :rules="selectedHashtagRules"
         v-model="selectedHashtag"
       ></v-text-field>
-      <v-btn block color="green darken-2" @click="addToArray" dark>Add</v-btn>
+      <v-btn block color="#061122" @click="addToArray" dark>Add</v-btn>
     </v-layout>
     <v-layout row justify-space-between class="pl-1  pr-1">
       <v-select

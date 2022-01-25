@@ -13,10 +13,10 @@
       <v-col cols="6">
         <div
           class="pa-2 text-center secondary rounded-0 rounded-pill"
-          :class="showPreviousMatches ? 'teal--text' : 'grey--text'"
-          @click="showPreviousMatchesInfo"
+          :class="showCroActions ? 'teal--text' : 'grey--text'"
+          @click="showCroActionsInfo"
         >
-          Previous Matches
+          CRO Actions
         </div>
       </v-col>
     </v-row>
@@ -24,22 +24,22 @@
       <v-col cols="12" v-if="showAccountDetails">
         <login-register-account-details />
       </v-col>
-      <v-col cols="12" v-if="showPreviousMatches">
-        <previous-matches/>
+      <v-col cols="12" v-if="showCroActions">
+        <cro-actions/>
       </v-col>
     </v-row>
   </v-container>
 </template>
 <script>
 import LoginRegisterAccountDetails from "../components/MyAccount/LoginRegisterAccountDetails.vue";
-import PreviousMatches from '../components/MyAccount/PreviousMatches/PreviousMatches.vue'
+import CroActions from '../components/MyAccount/CroActions/CroActions.vue'
 export default {
   name: "MyAccount",
-  components: { LoginRegisterAccountDetails,PreviousMatches },
+  components: { LoginRegisterAccountDetails,CroActions },
   data() {
     return {
       showAccountDetails: true,
-      showPreviousMatches: false,
+      showCroActions: false,
     };
   },
   created() {
@@ -53,11 +53,11 @@ export default {
   methods: {
     reset() {
       this.showAccountDetails = true;
-      this.showPreviousMatches = false;
+      this.showCroActions = false;
     },
-    showPreviousMatchesInfo() {
+    showCroActionsInfo() {
       this.showAccountDetails = false;
-      this.showPreviousMatches = true;
+      this.showCroActions = true;
     },
   },
 };

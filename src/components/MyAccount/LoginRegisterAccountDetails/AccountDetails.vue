@@ -75,7 +75,7 @@
               <v-btn
                 block
                 right
-                color="green darken-2"
+                color="#061122"
                 @click="edit"
                 dark
                 class="mb-3"
@@ -86,7 +86,7 @@
               <v-btn
                 block
                 right
-                color="green darken-2"
+                color="#061122"
                 @click="update"
                 dark
                 class="mb-3"

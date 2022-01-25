@@ -23,7 +23,7 @@
            <v-btn
             fab
             dark
-            color="green darken-2"
+            color="#061122"
             small
             @click="addGoal"
             :loading="updatingScore"
@@ -56,7 +56,7 @@
           <v-btn
             fab
             dark
-            color="green darken-2"
+            color="#061122"
             small
             @click="addPoint"
             :loading="updatingScore"

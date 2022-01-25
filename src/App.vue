@@ -1,9 +1,16 @@
 <template>
   <v-app>
-    <v-app-bar fixed color="green darken-2" dark>
-      <v-img class="mr-7" src="./assets/gst5050.png" max-height="50" max-width="50" contain></v-img>
-      <v-toolbar-title>GAA Score Tracker</v-toolbar-title>
+    <v-app-bar fixed color="#061122" dark>
+      <v-img
+        class="mr-7"
+        src="./assets/gst5050.png"
+        max-height="50"
+        max-width="50"
+        contain
+      ></v-img>
+      <v-toolbar-title>CRO Transaction Tracker</v-toolbar-title>
       <v-spacer></v-spacer>
+      <v-toolbar-title v-if="userDetails" class="name-title">Hi {{userDetails.username}}</v-toolbar-title>
     </v-app-bar>
     <v-main style="padding: 56px 0px 0px 0px;">
       <v-slide-y-transition mode="out-in">
@@ -12,63 +19,83 @@
         </keep-alive>
       </v-slide-y-transition>
       <v-bottom-navigation grow app>
-        <v-btn ripple to="/">
+        <v-btn v-if="userDetails" ripple to="/">
           <span
-            :class="{ 'teal--text': routeName == 'home', 'grey--text': routeName != 'home' }"
-          >Home</span>
+            :class="{
+              'teal--text': routeName == 'home',
+              'grey--text': routeName != 'home'
+            }"
+            >Home</span
+          >
           <v-icon
             dark
-            :class="{ 'teal--text': routeName == 'home', 'grey--text': routeName != 'home' }"
-          >home</v-icon>
+            :class="{
+              'teal--text': routeName == 'home',
+              'grey--text': routeName != 'home'
+            }"
+            >home</v-icon
+          >
         </v-btn>
-        <v-btn to="/settings">
+        <v-btn v-if="userDetails" to="/settings">
           <span
-            :class="{'teal--text': routeName == 'settings','grey--text': routeName != 'settings'}"
-          >Settings</span>
+            :class="{
+              'teal--text': routeName == 'settings',
+              'grey--text': routeName != 'settings'
+            }"
+            >Settings</span
+          >
           <v-icon
-            :class="{'teal--text': routeName == 'settings','grey--text': routeName != 'settings'}"
-          >settings</v-icon>
+            :class="{
+              'teal--text': routeName == 'settings',
+              'grey--text': routeName != 'settings'
+            }"
+            >settings</v-icon
+          >
         </v-btn>
         <v-btn to="/MyAccount">
           <span
-            :class="{'teal--text': routeName == 'MyAccount','grey--text': routeName != 'MyAccount'}"
-          >My Account</span>
+            :class="{
+              'teal--text': routeName == 'MyAccount',
+              'grey--text': routeName != 'MyAccount'
+            }"
+            >My Account</span
+          >
           <v-icon
-            :class="{'teal--text': routeName == 'MyAccount','grey--text': routeName != 'MyAccount'}"
-          >account_circle</v-icon>
-        </v-btn>
-        <v-btn @click="openResetModal">
-          <span class="red--text">Reset Data</span>
-          <v-icon class="red--text">refresh</v-icon>
+            :class="{
+              'teal--text': routeName == 'MyAccount',
+              'grey--text': routeName != 'MyAccount'
+            }"
+            >account_circle</v-icon
+          >
         </v-btn>
       </v-bottom-navigation>
-      <reset-data-modal />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import ResetDataModal from "./components/ResetDataModal.vue";
 
 export default {
   name: "App",
-  components: {
-    ResetDataModal
-  },
+
   methods: {
-    openResetModal() {
-      this.$store.dispatch("gameInformation/updateShowResetModal", true);
-    },
-    checkIfHasAuth(){
-      this.$store.dispatch("user/getCurrentUser");
+    checkIfHasAuth() {
+        if (this.userDetails === null) {
+          this.$router.push("/MyAccount");
+        }
     }
   },
-  mounted(){
-    this.checkIfHasAuth()
+  watch: {
+    $route(to, from) {
+      this.checkIfHasAuth()
+    }
   },
   computed: {
     routeName() {
       return this.$root.$route.name;
+    },
+    userDetails() {
+      return this.$store.getters["user/userDetails"];
     }
   }
 };
@@ -77,5 +104,7 @@ export default {
 .material-icons.md-12 {
   font-size: 14px;
 }
-
+.name-title {
+  font-size: 0.9rem !important;
+}
 </style>

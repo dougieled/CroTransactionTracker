@@ -1,87 +1,118 @@
-import userManager from "../api/userManager"
+import userManager from "../api/userManager";
 const UserModule = {
   namespaced: true,
   state: {
     userDetails: null,
     lastApiCallMade: null,
-    showLogoutModal:false
-
+    showLogoutModal: false
   },
   mutations: {
     updateUserDetails(state, data) {
-      state.userDetails = data
+      state.userDetails = data;
     },
     updateLastApiCalledMade(state, data) {
-      state.lastApiCallMade = data
+      state.lastApiCallMade = data;
     },
     updateShowLogoutModal(state, data) {
-      state.showLogoutModal = data
-    },
-
+      state.showLogoutModal = data;
+    }
   },
   actions: {
     login({ commit }, data) {
-      userManager.Login(data).then((res) => {
-        if (res.status === 200) {
-          commit('updateUserDetails', res.data)
-          commit('updateLastApiCalledMade', new Date())
-        }
-      })
-    },
-    logout({ commit }) {
-      commit('updateUserDetails', null)
-      commit('updateLastApiCalledMade', null)
-    },
-    register({ commit }, data) {
-      userManager.RegisterUser(data).then((res) => {
-        if (res.status === 200) {
-          let newData = { username: data.username, password: data.password }
-          userManager.Login(newData).then((res) => {
+      return new Promise((resolve, reject) => {
+        userManager
+          .Login(data)
+          .then(res => {
             if (res.status === 200) {
-              commit('updateUserDetails', res.data)
-              commit('updateLastApiCalledMade', new Date())
+              commit("updateUserDetails", res.data);
+              commit("updateLastApiCalledMade", new Date());
+              resolve(true);
             }
           })
-        }
-      })
+          .catch(() => {
+            reject(false);
+          });
+      });
+    },
+    logout({ commit }) {
+      return new Promise((resolve, reject) => {
+        commit("updateUserDetails", null);
+        commit("updateLastApiCalledMade", null);
+        resolve(true);
+      });
+    },
+    register({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        userManager.RegisterUser(data).then(res => {
+          if (res.status === 200) {
+            let newData = { username: data.username, password: data.password };
+            userManager
+              .Login(newData)
+              .then(res => {
+                if (res.status === 200) {
+                  commit("updateUserDetails", res.data);
+                  commit("updateLastApiCalledMade", new Date());
+                  resolve(true);
+                }
+              })
+              .catch(() => {
+                reject(false);
+              });
+          }
+        });
+      });
     },
     updateUserDetails({ commit }, { data, id }) {
-      userManager.updateUserByID(data, id).then((res) => {
-        if (res.status === 200) {
-          commit('updateUserDetails', res.data)
-          commit('updateLastApiCalledMade', new Date())
-        }
-      })
+      return new Promise((resolve, reject) => {
+        userManager
+          .updateUserByID(data, id)
+          .then(res => {
+            if (res.status === 200) {
+              commit("updateUserDetails", res.data);
+              commit("updateLastApiCalledMade", new Date());
+              resolve(true);
+            }
+          })
+          .catch(() => {
+            reject(false);
+          });
+      });
     },
     updateLastApiCalledMade({ commit }, data) {
-      commit('updateLastApiCalledMade', data)
+      commit("updateLastApiCalledMade", data);
     },
     updateShowLogoutModal({ commit }, data) {
-      commit('updateShowLogoutModal', data)
+      commit("updateShowLogoutModal", data);
     },
     getCurrentUser({ commit }) {
-      userManager.GetCurrentUser().then((res) => {
-        if (res.status === 200) {
-          commit('updateUserDetails', res.data)
-          commit('updateLastApiCalledMade', new Date())
-        }
-      })
-      .catch(() => {
-          commit('updateUserDetails', null)
-          commit('updateLastApiCalledMade', null)
-      })
-    },
+      return new Promise((resolve, reject) => {
+        userManager
+          .GetCurrentUser()
+          .then(res => {
+            if (res.status === 200) {
+              commit("updateUserDetails", res.data);
+              commit("updateLastApiCalledMade", new Date());
+              resolve(true);
+            }
+          })
+          .catch(() => {
+            commit("updateUserDetails", null);
+            commit("updateLastApiCalledMade", null);
+            reject(false);
+          });
+      });
+    }
   },
   getters: {
     userDetails(state) {
-      return state.userDetails
+      return state.userDetails;
     },
     lastApiCallMade(state) {
-      return state.lastApiCallMade
+      return state.lastApiCallMade;
     },
-    showLogoutModal(state){
-      return state.showLogoutModal
+    showLogoutModal(state) {
+      return state.showLogoutModal;
     }
   }
-}
-export default UserModule
+};
+export default UserModule;

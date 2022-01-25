@@ -34,7 +34,7 @@
               >
             </v-col>
             <v-col cols="12">
-              <v-btn color="primary" @click="login" block>Login</v-btn>
+              <v-btn color="#061122" @click="login" block>Login</v-btn>
             </v-col>
           </v-row>
         </v-card-actions>
@@ -51,26 +51,30 @@ export default {
       username: "",
       password: "",
       usernameRules: [
-        (v) => !!v || "Username is required",
-        (v) => v.length > 5 || "Username must be a minimum of 6 characters",
+        v => !!v || "Username is required",
+        v => v.length > 5 || "Username must be a minimum of 6 characters"
       ],
       passwordRules: [
-        (v) => !!v || "Password is required",
-        (v) => v.length > 5 || "Password must be a minimum of 6 characters",
-      ],
+        v => !!v || "Password is required",
+        v => v.length > 5 || "Password must be a minimum of 6 characters"
+      ]
     };
   },
   methods: {
     login() {
       if (this.$refs.login.validate()) {
         let data = { username: this.username, password: this.password };
-        this.$store.dispatch("user/login", data);
+        this.$store.dispatch("user/login", data).then(res => {
+          if (res === true) {
+            this.$router.push("/");
+          }
+        });
       }
     },
     goToRegisterPage() {
       this.$emit("show-register");
-    },
-  },
+    }
+  }
 };
 </script>
 <style></style>

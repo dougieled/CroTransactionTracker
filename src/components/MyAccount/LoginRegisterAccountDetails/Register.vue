@@ -57,7 +57,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red darken-2" @click="goToLoginPage">back to Login</v-btn>
-          <v-btn color="primary" @click="register">Register</v-btn>
+          <v-btn color="#061122" @click="register">Register</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>

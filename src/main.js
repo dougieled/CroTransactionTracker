@@ -4,7 +4,6 @@ import vuetify from './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 import store from './Store/store'
-import './registerServiceWorker'
 import { config } from '../firebaseConfig'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 

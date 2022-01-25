@@ -7,7 +7,7 @@
           >Close</v-btn
         >
         <v-layout align-center justify-end>
-          <v-btn left color="green darken-2" @click="resetData" dark
+          <v-btn left color="#061122" @click="logout" dark
             >Logout</v-btn
           >
         </v-layout>
@@ -19,7 +19,7 @@
 <script>
 export default {
   methods: {
-    resetData() {
+    logout() {
       this.$store.dispatch("user/logout", null);
       this.$store.dispatch("user/updateShowLogoutModal", false);
     },
