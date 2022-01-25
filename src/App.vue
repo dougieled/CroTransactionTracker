@@ -36,20 +36,20 @@
             >home</v-icon
           >
         </v-btn>
-        <v-btn v-if="userDetails" to="/settings">
+        <v-btn v-if="userDetails" to="/Upload">
           <span
             :class="{
-              'teal--text': routeName == 'settings',
-              'grey--text': routeName != 'settings'
+              'teal--text': routeName == 'Upload',
+              'grey--text': routeName != 'Upload'
             }"
-            >Settings</span
+            >Upload</span
           >
           <v-icon
             :class="{
-              'teal--text': routeName == 'settings',
-              'grey--text': routeName != 'settings'
+              'teal--text': routeName == 'Upload',
+              'grey--text': routeName != 'Upload'
             }"
-            >settings</v-icon
+            >upload_file</v-icon
           >
         </v-btn>
         <v-btn to="/MyAccount">

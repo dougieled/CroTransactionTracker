@@ -11,9 +11,9 @@ export default new Router({
       component: () => import('./views/Home.vue')
     },
     {
-      path: '/Settings',
-      name: 'settings',
-      component: () => import('./views/Settings.vue')
+      path: '/Upload',
+      name: 'Upload',
+      component: () => import('./views/Upload.vue')
     },
     {
       path: '/MyAccount',
