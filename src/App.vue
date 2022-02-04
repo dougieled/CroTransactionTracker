@@ -3,7 +3,7 @@
     <v-app-bar fixed color="#061122" dark>
       <v-img
         class="mr-7"
-        src="./assets/gst5050.png"
+        src="./assets/cro-logo.svg"
         max-height="50"
         max-width="50"
         contain

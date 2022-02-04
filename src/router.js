@@ -19,6 +19,12 @@ export default new Router({
       path: '/MyAccount',
       name: 'MyAccount',
       component: () => import('./views/MyAccount.vue')
+    },
+    {
+      path: '/TransactionPeriods/:periodicity',
+      name: 'TransactionPeriods',
+      props:true,
+      component: () => import('./views/TransactionPeriods.vue')
     }
   ]
 })
