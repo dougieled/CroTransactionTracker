@@ -19,11 +19,9 @@
       <div class="text-h3 transition-swing font-weight-medium" v-text="periodicity" />
       </v-col>
     </v-row>
-    <v-row no-gutters>
         <daily v-if="periodicity === 'Daily'" />
         <weekly v-if="periodicity === 'Weekly'" />
         <monthly v-if="periodicity === 'Monthly'" />
-    </v-row>
   </v-container>
 </template>
 
@@ -45,10 +43,8 @@ export default {
   },
   methods: {
     getData() {
-      this.$store.dispatch("transaction/login", data).then(res => {
-          if (res === true) {
-            this.$router.push("/");
-          }
+      this.$store.dispatch("transaction/getMyRecords").then(res => {
+
         });
     },
   },

@@ -11,12 +11,12 @@ export default {
     var route = this.GetRequestURL(`/transactions/${id}`)
     return ApiClient.apiGet(route)
   },
-  CreateTransactions(data, userId) {
-    var route = this.GetRequestURL(`/transactions/register/${userId}`)
+  CreateTransactions(data) {
+    var route = this.GetRequestURL(`/transactions/register`)
     return ApiClient.apiPost(route, data, false).then()
   },
-  updateTransactionByID(dto, id, userId) {
-    var route = this.GetRequestURL(`/transactions/${id}/${userId}`)
+  updateTransactionByID(dto, id) {
+    var route = this.GetRequestURL(`/transactions/${id}`)
     return ApiClient.apiPut(route, dto)
   },
   GetAllTransactions() {
@@ -32,16 +32,16 @@ export default {
     return ApiClient.apiDelete(route)
   },
 
-  GetAllMyRecords(userId) {
-    var route = this.GetRequestURL(`/transactions/MyRecords/${userId}`)
+  GetAllMyRecords() {
+    var route = this.GetRequestURL(`/transactions/MyRecords`)
     return ApiClient.apiGet(route)
   },
-  GetAllMyTransactions(userId) {
-    var route = this.GetRequestURL(`/transactions/MyTransactions/${userId}`)
+  GetAllMyTransactions() {
+    var route = this.GetRequestURL(`/transactions/MyTransactions`)
     return ApiClient.apiGet(route)
   },
-  GetAllMyDeposits(userId) {
-    var route = this.GetRequestURL(`/transactions/MyDeposits/${userId}`)
+  GetAllMyDeposits() {
+    var route = this.GetRequestURL(`/transactions/MyDeposits`)
     return ApiClient.apiGet(route)
   }
   

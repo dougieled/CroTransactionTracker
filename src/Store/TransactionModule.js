@@ -1,4 +1,5 @@
 import transactionManager from "../api/transactionManager"
+import moment from 'moment'
 const TransactionModule = {
   namespaced: true,
   state: {
@@ -16,9 +17,9 @@ const TransactionModule = {
 
   },
   actions: {
-    getMyTransactions({ commit }, data) {
+    getMyRecords({ commit }) {
       commit('updateTransactions', [])
-      transactionManager.GetMyTransactions(data).then((res) => {
+      transactionManager.GetAllMyRecords().then((res) => {
         if (res.status === 200) {
           commit('updateTransactions', res.data)
         }
@@ -30,7 +31,7 @@ const TransactionModule = {
 
     },
     updateTransactionByID({ commit }, data) {
-      transactionManager.RegisterUser(data, data.id, data.userId).then((res) => {
+      transactionManager.updateTransactionByID(data, data.id).then((res) => {
         if (res.status === 200) {
             if (res.status === 200) {
               commit('updateTransactionByID', res.data)
@@ -48,7 +49,15 @@ const TransactionModule = {
   },
   getters: {
     transactions(state) {
-      return state.transactions
+      return state.transactions.map(x =>{
+        return {
+          ...x,
+          timestampFormatted:moment(x.timestamp).format('DD/MM/YYYY HH:mm'),
+          amountFormatted:Math.abs(x.amount),
+          isDepositFormatted:x.isDeposit?'Yes':'No'
+          
+        }
+      })
     }
   }
 }
