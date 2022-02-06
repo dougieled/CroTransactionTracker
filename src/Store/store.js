@@ -1,10 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import GameInformationModule from './GameInformationModule'
-import StopWatchModule from './StopWatchModule'
 import UserModule from './UserModule'
-import MatchModule from './MatchModule'
+import TransactionModule from './TransactionModule'
 
 import VuexPersist from 'vuex-persist'
 const vuexPersist = new VuexPersist({
@@ -16,10 +14,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    gameInformation: GameInformationModule,
-    stopWatch: StopWatchModule,
     user:UserModule,
-    match:MatchModule
+    transaction:TransactionModule
   },
   plugins: [vuexPersist.plugin]
 })
