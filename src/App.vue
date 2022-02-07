@@ -87,7 +87,9 @@ export default {
   },
   watch: {
     $route(to, from) {
-      this.checkIfHasAuth()
+      if(to !== from){
+        this.checkIfHasAuth()
+      }
     }
   },
   computed: {

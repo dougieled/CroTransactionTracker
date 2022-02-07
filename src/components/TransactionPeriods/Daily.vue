@@ -1,6 +1,7 @@
 <template>
   <v-row justify="center">
-    <v-col cols="4" class="pb-0 pt-0" key="daily">
+    <v-col cols="4" />
+    <v-col cols="4" class="pt-0" key="daily">
       <v-menu
         ref="menu"
         v-model="menu"
@@ -32,17 +33,50 @@
         ></v-date-picker>
       </v-menu>
     </v-col>
-    <v-col class="pb-0 pt-0" cols="12">
-      Amount spent: £{{totalAmountSpent}}
+    <v-col cols="4" />
+
+    <v-col class="pb-0 pt-0" cols="4">
+      <v-checkbox
+        v-model="showTransactions"
+        dense
+        label="Show Transactions?"
+      ></v-checkbox>
     </v-col>
-    <v-col class="pb-0 pt-0" cols="12">
+    <v-col class="pb-0 pt-0" cols="4">
+      <v-checkbox
+        v-model="showDeposits"
+        dense
+        label="Show Deposits?"
+      ></v-checkbox>
+    </v-col>
+   <v-col class="pb-0 pt-0" cols="4">
+      <v-checkbox
+        v-model="showATMWithdrawals"
+        dense
+        label="Show ATM Withdrawals?"
+      ></v-checkbox>
+    </v-col>
+    <v-col class="pb-0 pt-0" cols="4">
+      Amount Spent: £{{ totalAmountSpent }}
+    </v-col>
+    <v-col class="pb-0 pt-0" cols="4">
+      Amount Deposited: £{{ totalAmountDeposited }}
+    </v-col>
+    <v-col class="pb-0 pt-0" cols="4">
+      Amount Withdrew: £{{ totalAmountWithdrew }}
+    </v-col>
+    <v-col class="pb-10 pt-0" cols="12">
       <v-data-table
         dense
         :headers="headers"
-        :items="transactions"
-        :items-per-page="100"
+        :items="records"
+        :items-per-page="10"
         :item-class="row_classes"
+        item-key="id"
         class="elevation-1"
+        :footer-props="{
+          showFirstLastPage: true
+        }"
       ></v-data-table>
     </v-col>
   </v-row>
@@ -64,14 +98,10 @@ export default {
         { text: 'Description', value: 'description' },
         { text: 'Amount', value: 'amountFormatted' },
         { text: 'Deposit', value: 'isDepositFormatted' }
-        // { text: 'ID', value: 'id' },
-        //   {
-        //     text: 'Dessert (100g serving)',
-        //     align: 'start',
-        //     sortable: false,
-        //     value: 'name',
-        //   }
-      ]
+      ],
+      showTransactions: true,
+      showDeposits: true,
+      showATMWithdrawals:true
     }
   },
   mounted() {
@@ -86,18 +116,52 @@ export default {
     formatDate() {
       return this.date ? moment(this.date).format('DD/MM/YYYY') : ''
     },
-    transactions() {
-      return this.$store.getters['transaction/transactions']
+    deposits(){
+      return this.$store.getters['transaction/transactions'].filter(x => x.isDeposit)
+    },
+    transactions(){
+      return this.$store.getters['transaction/transactions'].filter(x => !x.isDeposit)
+    },
+    records() {
+      let array = []
+      if(this.showTransactions){
+        array = array.concat(this.transactions.filter(x => x.description!=='ATM'))
+      }
+      if(this.showDeposits){
+        array = array.concat(this.deposits)
+      }
+      if(this.showATMWithdrawals){
+        array = array.concat(this.transactions.filter(x => x.description==='ATM'))
+      }
+      return array
     },
     totalAmountSpent() {
-      let amounts = this.transactions
-        .filter(x => !x.isDeposit)
+      let amounts = this.showATMWithdrawals ? this.transactions.filter(x => !x.isDeposit):this.transactions.filter(x => !x.isDeposit && x.description!=='ATM')
+        let amountsTotal = amounts.map(x => x.amountFormatted)
+      var sum = 0
+      for (var i = 0; i < amountsTotal.length; i++) {
+        sum += amountsTotal[i]
+      }
+      return sum.toFixed(2)
+    },
+    totalAmountWithdrew(){
+      let amounts = this.transactions.filter(x => !x.isDeposit && x.description==='ATM')
+        let amountsTotal = amounts.map(x => x.amountFormatted)
+      var sum = 0
+      for (var i = 0; i < amountsTotal.length; i++) {
+        sum += amountsTotal[i]
+      }
+      return sum.toFixed(2)
+    },
+    totalAmountDeposited() {
+      let amounts = this.deposits
+        .filter(x => x.isDeposit)
         .map(x => x.amountFormatted)
       var sum = 0
       for (var i = 0; i < amounts.length; i++) {
         sum += amounts[i]
       }
-      return sum
+      return sum.toFixed(2)
     }
   },
   methods: {
