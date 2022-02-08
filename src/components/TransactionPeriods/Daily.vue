@@ -1,6 +1,10 @@
 <template>
-  <v-row justify="center">
-    <v-col cols="4" />
+  <v-row>
+    <v-col cols="4" class="d-flex justify-start">
+      <v-btn rounded color="#061122" dark @click="getPrevious">
+        <v-icon dark large>arrow_back_ios</v-icon>
+      </v-btn>
+    </v-col>
     <v-col cols="4" class="pt-0" key="daily">
       <v-menu
         ref="menu"
@@ -33,7 +37,11 @@
         ></v-date-picker>
       </v-menu>
     </v-col>
-    <v-col cols="4" />
+    <v-col class="d-flex justify-end" cols="4">
+      <v-btn v-if="!isSelectedDateToday" rounded color="#061122" dark @click="getNext">
+        <v-icon dark large>arrow_forward_ios</v-icon>
+      </v-btn>
+    </v-col>
 
     <v-col class="pb-0 pt-0" cols="4">
       <v-checkbox
@@ -49,7 +57,7 @@
         label="Show Deposits?"
       ></v-checkbox>
     </v-col>
-   <v-col class="pb-0 pt-0" cols="4">
+    <v-col class="pb-0 pt-0" cols="4">
       <v-checkbox
         v-model="showATMWithdrawals"
         dense
@@ -101,7 +109,7 @@ export default {
       ],
       showTransactions: true,
       showDeposits: true,
-      showATMWithdrawals:true
+      showATMWithdrawals: true
     }
   },
   mounted() {
@@ -109,44 +117,60 @@ export default {
   },
   watch: {
     menu(val) {
-      val && setTimeout(() => (this.activePicker = 'YEAR'))
+      val && setTimeout(() => (this.activePicker = 'DATE'))
     }
   },
   computed: {
+    isSelectedDateToday() {
+      return moment().isSame(moment(this.date), 'day')
+    },
     formatDate() {
       return this.date ? moment(this.date).format('DD/MM/YYYY') : ''
     },
-    deposits(){
-      return this.$store.getters['transaction/transactions'].filter(x => x.isDeposit)
+    storeTransaction() {
+      return this.$store.getters['transaction/transactions'].filter(x =>
+        moment(x.timestamp).isSame(moment(this.date), 'day')
+      )
     },
-    transactions(){
-      return this.$store.getters['transaction/transactions'].filter(x => !x.isDeposit)
+    deposits() {
+      return this.storeTransaction.filter(x => x.isDeposit)
+    },
+    transactions() {
+      return this.storeTransaction.filter(x => !x.isDeposit)
     },
     records() {
       let array = []
-      if(this.showTransactions){
-        array = array.concat(this.transactions.filter(x => x.description!=='ATM'))
+      if (this.showTransactions) {
+        array = array.concat(
+          this.transactions.filter(x => x.description !== 'ATM')
+        )
       }
-      if(this.showDeposits){
+      if (this.showDeposits) {
         array = array.concat(this.deposits)
       }
-      if(this.showATMWithdrawals){
-        array = array.concat(this.transactions.filter(x => x.description==='ATM'))
+      if (this.showATMWithdrawals) {
+        array = array.concat(
+          this.transactions.filter(x => x.description === 'ATM')
+        )
       }
       return array
     },
     totalAmountSpent() {
-      let amounts = this.showATMWithdrawals ? this.transactions.filter(x => !x.isDeposit):this.transactions.filter(x => !x.isDeposit && x.description!=='ATM')
-        let amountsTotal = amounts.map(x => x.amountFormatted)
+      let amounts = this.showATMWithdrawals
+        ? this.transactions.filter(x => !x.isDeposit)
+        : this.transactions.filter(x => !x.isDeposit && x.description !== 'ATM')
+      let amountsTotal = amounts.map(x => x.amountFormatted)
       var sum = 0
       for (var i = 0; i < amountsTotal.length; i++) {
         sum += amountsTotal[i]
       }
       return sum.toFixed(2)
     },
-    totalAmountWithdrew(){
-      let amounts = this.transactions.filter(x => !x.isDeposit && x.description==='ATM')
-        let amountsTotal = amounts.map(x => x.amountFormatted)
+    totalAmountWithdrew() {
+      let amounts = this.transactions.filter(
+        x => !x.isDeposit && x.description === 'ATM'
+      )
+      let amountsTotal = amounts.map(x => x.amountFormatted)
       var sum = 0
       for (var i = 0; i < amountsTotal.length; i++) {
         sum += amountsTotal[i]
@@ -174,6 +198,12 @@ export default {
       } else {
         return 'red lighten-1'
       }
+    },
+    getPrevious(){
+      this.date = moment(this.date).subtract(1, 'd')
+    },
+    getNext(){
+      this.date = moment(this.date).add(1, 'd')
     }
   }
 }
