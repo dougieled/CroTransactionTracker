@@ -127,9 +127,15 @@ export default {
     formatDate() {
       return this.date ? moment(this.date).format('DD/MM/YYYY') : ''
     },
+    dateWithTime(){
+      return moment(this.date).add(12,'hours')
+    },
+    allStoreTransaction() {
+      return this.$store.getters['transaction/transactions']
+    },
     storeTransaction() {
       return this.$store.getters['transaction/transactions'].filter(x =>
-        moment(x.timestamp).isSame(moment(this.date), 'day')
+        moment(moment(x.timestamp)).isSame(moment(this.dateWithTime), 'day')
       )
     },
     deposits() {
@@ -153,7 +159,9 @@ export default {
           this.transactions.filter(x => x.description === 'ATM')
         )
       }
-      return array
+      return array.sort((a, b) =>
+      a.timestamp > b.timestamp ? 1 : b.timestamp > a.timestamp ? -1 : 0
+    )
     },
     totalAmountSpent() {
       let amounts = this.showATMWithdrawals
@@ -200,10 +208,10 @@ export default {
       }
     },
     getPrevious(){
-      this.date = moment(this.date).subtract(1, 'd')
+      this.date = moment(this.date).subtract(1, 'd').format('YYYY-MM-DD')
     },
     getNext(){
-      this.date = moment(this.date).add(1, 'd')
+      this.date = moment(this.date).add(1, 'd').format('YYYY-MM-DD')
     }
   }
 }

@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import UserModule from './UserModule'
 import TransactionModule from './TransactionModule'
+import SettingModule from './SettingModule'
 
 import VuexPersist from 'vuex-persist'
 const vuexPersist = new VuexPersist({
@@ -15,7 +16,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
     user:UserModule,
-    transaction:TransactionModule
+    transaction:TransactionModule,
+    setting:SettingModule
   },
   plugins: [vuexPersist.plugin]
 })

@@ -48,11 +48,13 @@ const TransactionModule = {
     }
   },
   getters: {
-    transactions(state) {
+    transactions(state, getters, rootState, rootGetters) {
       return state.transactions.map(x =>{
+        let minutesToAdd = rootGetters['setting/utcOffsetTimeDifference']
         return {
           ...x,
-          timestampFormatted:moment(x.timestamp).format('DD/MM/YYYY HH:mm'),
+          timestamp:moment(x.timestamp).add(minutesToAdd,'minutes'),
+          timestampFormatted:moment(x.timestamp).add(minutesToAdd,'minutes').format('DD/MM/YYYY HH:mm'),
           amountFormatted:Math.abs(x.amount),
           isDepositFormatted:x.isDeposit?'Yes':'No'
           

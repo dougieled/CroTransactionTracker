@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-app-bar fixed color="#061122" dark>
+      <router-link to="/">
       <v-img
         class="mr-7"
         src="./assets/cro-logo.svg"
@@ -8,6 +9,7 @@
         max-width="50"
         contain
       ></v-img>
+      </router-link>
       <v-toolbar-title>CRO Transaction Tracker</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-title v-if="userDetails" class="name-title">Hi {{userDetails.username}}</v-toolbar-title>
