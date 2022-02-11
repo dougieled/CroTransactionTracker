@@ -38,7 +38,13 @@
       </v-menu>
     </v-col>
     <v-col class="d-flex justify-end" cols="4">
-      <v-btn v-if="!isSelectedDateToday" rounded color="#061122" dark @click="getNext">
+      <v-btn
+        v-if="!isSelectedDateToday"
+        rounded
+        color="#061122"
+        dark
+        @click="getNext"
+      >
         <v-icon dark large>arrow_forward_ios</v-icon>
       </v-btn>
     </v-col>
@@ -74,42 +80,23 @@
       Amount Withdrew: £{{ totalAmountWithdrew }}
     </v-col>
     <v-col class="pb-10 pt-0" cols="12">
-      <v-data-table
-        dense
-        :headers="headers"
-        :items="records"
-        :items-per-page="10"
-        :item-class="row_classes"
-        item-key="id"
-        class="elevation-1"
-        :footer-props="{
-          showFirstLastPage: true
-        }"
-      ></v-data-table>
+      <transaction-table :records="records" />
     </v-col>
   </v-row>
 </template>
 
 <script>
 import moment from 'moment'
+import TransactionTable from './TransactionView/TransactionTable.vue'
+import { mapFields } from 'vuex-map-fields'
+import { mapGetters } from 'vuex'
 export default {
   name: 'Daily',
-  components: {},
+  components: { TransactionTable },
   data() {
     return {
       activePicker: null,
-      date: null,
-      menu: false,
-      headers: [
-        { text: 'ID', value: 'id' },
-        { text: 'Timestamp', value: 'timestampFormatted' },
-        { text: 'Description', value: 'description' },
-        { text: 'Amount', value: 'amountFormatted' },
-        { text: 'Deposit', value: 'isDepositFormatted' }
-      ],
-      showTransactions: true,
-      showDeposits: true,
-      showATMWithdrawals: true
+      menu: false
     }
   },
   mounted() {
@@ -121,79 +108,18 @@ export default {
     }
   },
   computed: {
+    ...mapFields('transaction', ['date','showTransactions','showDeposits','showATMWithdrawals']),
+    ...mapGetters('transaction', [
+      'totalAmountSpent',
+      'totalAmountWithdrew',
+      'totalAmountDeposited',
+      'records'
+    ]),
     isSelectedDateToday() {
       return moment().isSame(moment(this.date), 'day')
     },
     formatDate() {
       return this.date ? moment(this.date).format('DD/MM/YYYY') : ''
-    },
-    dateWithTime(){
-      return moment(this.date).add(12,'hours')
-    },
-    allStoreTransaction() {
-      return this.$store.getters['transaction/transactions']
-    },
-    storeTransaction() {
-      return this.$store.getters['transaction/transactions'].filter(x =>
-        moment(moment(x.timestamp)).isSame(moment(this.dateWithTime), 'day')
-      )
-    },
-    deposits() {
-      return this.storeTransaction.filter(x => x.isDeposit)
-    },
-    transactions() {
-      return this.storeTransaction.filter(x => !x.isDeposit)
-    },
-    records() {
-      let array = []
-      if (this.showTransactions) {
-        array = array.concat(
-          this.transactions.filter(x => x.description !== 'ATM')
-        )
-      }
-      if (this.showDeposits) {
-        array = array.concat(this.deposits)
-      }
-      if (this.showATMWithdrawals) {
-        array = array.concat(
-          this.transactions.filter(x => x.description === 'ATM')
-        )
-      }
-      return array.sort((a, b) =>
-      a.timestamp > b.timestamp ? 1 : b.timestamp > a.timestamp ? -1 : 0
-    )
-    },
-    totalAmountSpent() {
-      let amounts = this.showATMWithdrawals
-        ? this.transactions.filter(x => !x.isDeposit)
-        : this.transactions.filter(x => !x.isDeposit && x.description !== 'ATM')
-      let amountsTotal = amounts.map(x => x.amountFormatted)
-      var sum = 0
-      for (var i = 0; i < amountsTotal.length; i++) {
-        sum += amountsTotal[i]
-      }
-      return sum.toFixed(2)
-    },
-    totalAmountWithdrew() {
-      let amounts = this.transactions.filter(
-        x => !x.isDeposit && x.description === 'ATM'
-      )
-      let amountsTotal = amounts.map(x => x.amountFormatted)
-      var sum = 0
-      for (var i = 0; i < amountsTotal.length; i++) {
-        sum += amountsTotal[i]
-      }
-      return sum.toFixed(2)
-    },
-    totalAmountDeposited() {
-      let amounts = this.deposits
-        .filter(x => x.isDeposit)
-        .map(x => x.amountFormatted)
-      var sum = 0
-      for (var i = 0; i < amounts.length; i++) {
-        sum += amounts[i]
-      }
-      return sum.toFixed(2)
     }
   },
   methods: {
@@ -207,11 +133,15 @@ export default {
         return 'red lighten-1'
       }
     },
-    getPrevious(){
-      this.date = moment(this.date).subtract(1, 'd').format('YYYY-MM-DD')
+    getPrevious() {
+      this.date = moment(this.date)
+        .subtract(1, 'd')
+        .format('YYYY-MM-DD')
     },
-    getNext(){
-      this.date = moment(this.date).add(1, 'd').format('YYYY-MM-DD')
+    getNext() {
+      this.date = moment(this.date)
+        .add(1, 'd')
+        .format('YYYY-MM-DD')
     }
   }
 }
