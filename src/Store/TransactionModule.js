@@ -9,7 +9,8 @@ const TransactionModule = {
     date: null,
     showTransactions: true,
     showDeposits: true,
-    showATMWithdrawals: true
+    showATMWithdrawals: true,
+    period:null
   },
   mutations: {
     updateField,
@@ -19,6 +20,9 @@ const TransactionModule = {
     updateTransactionByID(state, data) {
       let index = state.transactions.findIndex(x => x.id === data.id)
       state.transactions.splice(index, 1, data)
+    },
+    updateDate(state, data) {
+      state.date = data
     }
   },
   actions: {
@@ -51,7 +55,44 @@ const TransactionModule = {
           commit('updateTransactions', res.data)
         }
       })
-    }
+    },
+    getPreviousDay({ commit, state }) {
+      commit('updateDate', moment(state.date)
+      .subtract(1, 'd')
+      .format('YYYY-MM-DD'))
+    },
+    getNextDay({ commit, state }) {
+      commit('updateDate', moment(state.date)
+      .add(1, 'd')
+      .format('YYYY-MM-DD'))
+    },
+    getPreviousWeek({ commit, state }) {
+      commit('updateDate', moment(state.date)
+      .subtract(1, 'd')
+      .format('YYYY-MM-DD'))
+    },
+    getNextWeek({ commit, state }) {
+      commit('updateDate', moment(state.date)
+      .add(1, 'd')
+      .format('YYYY-MM-DD'))
+    },
+    getPreviousMonth({ commit, state }) {
+      commit('updateDate', moment(state.date)
+      .subtract(1, 'months')
+      .format('YYYY-MM-DD'))
+    },
+    getNextMonth({ commit, state }) {
+      commit('updateDate', moment(state.date)
+      .add(1, 'months')
+      .format('YYYY-MM-DD'))
+    },
+    setDate({ commit, state }) {
+      commit('updateDate', new Date().toISOString().slice(0, 10))
+    },
+    setDateMonth({ commit, state }) {
+      var date = new Date();
+      commit('updateDate', new Date(date.getFullYear(), date.getMonth(), 1, 12).toISOString().slice(0, 10))
+    },
   },
   getters: {
     getField,
@@ -69,16 +110,26 @@ const TransactionModule = {
         }
       })
     },
-    transactionsByDayFilter(state, getters) {
-      return getters.transactions.filter(x =>
-        moment(moment(x.timestamp)).isSame(moment(getters.dateWithTime), 'day')
-      )
+    transactionsByFilter(state, getters) {
+      if(state.period ==='Daily'){
+        return getters.transactions.filter(x =>
+          moment(moment(x.timestamp)).isSame(moment(getters.dateWithTime), 'day')
+        )
+      }else if(state.period ==='Weekly'){
+        return getters.transactions.filter(x =>
+          moment(moment(x.timestamp)).isSame(moment(getters.dateWithTime), 'day')
+        )
+      }else{
+        return getters.transactions.filter(x =>
+          moment(moment(x.timestamp)).isSame(moment(getters.dateWithTime), 'month')
+        )
+      }
     },
     deposits(state, getters) {
-      return getters.transactionsByDayFilter.filter(x => x.isDeposit)
+      return getters.transactionsByFilter.filter(x => x.isDeposit)
     },
     transactionNoDeposit(state, getters) {
-      return getters.transactionsByDayFilter.filter(x => !x.isDeposit)
+      return getters.transactionsByFilter.filter(x => !x.isDeposit)
     },
     dateWithTime(state) {
       return moment(state.date).add(12, 'hours')

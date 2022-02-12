@@ -1,17 +1,103 @@
 <template>
-<v-row no-gutters>
-  <v-col key="monthly">
-    <v-card class="pa-2 text-center" outlined tile>
-      Monthly
-    </v-card>
-  </v-col>
-</v-row>
+  <v-container fluid class="p-0 mt-2">
+    <v-row>
+      <v-col cols="4" class="d-flex justify-start">
+        <v-btn rounded color="#061122" dark @click="getPreviousMonth">
+          <v-icon dark large>arrow_back_ios</v-icon>
+        </v-btn>
+      </v-col>
+      <v-col cols="4" class="pt-0" key="daily">
+        <v-menu
+          ref="menu"
+          v-model="menu"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="formatDate"
+              label="Selected Date"
+              prepend-icon="mdi-calendar"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            v-model="date"
+            :max="
+              new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                .toISOString()
+                .substr(0, 10)
+            "
+            min="2015-01-01"
+            type="month"
+            @change="save"
+          ></v-date-picker>
+        </v-menu>
+      </v-col>
+      <v-col class="d-flex justify-end" cols="4">
+        <v-btn
+          v-if="!isSelectedDateToday"
+          rounded
+          color="#061122"
+          dark
+          @click="getNextMonth"
+        >
+          <v-icon dark large>arrow_forward_ios</v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
+    <show-checkboxes />
+    <amounts/>
+        <transaction-table :records="records" />
+  </v-container>
 </template>
 
 <script>
+import moment from 'moment'
+import TransactionTable from './TransactionView/TransactionTable.vue'
+import ShowCheckboxes from './TransactionView/ShowCheckboxes.vue'
+import Amounts from './TransactionView/Amounts.vue'
+import { mapFields } from 'vuex-map-fields'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Monthly',
-  components: {},
-  computed: {}
+  components: { TransactionTable, ShowCheckboxes,Amounts },
+  data() {
+    return {
+      menu: false
+    }
+  },
+  mounted() {
+    this.setDateMonth()
+    this.period = 'Monthly'
+  },
+  computed: {
+    ...mapFields('transaction', [
+      'date',
+      'period'
+    ]),
+    ...mapGetters('transaction', [
+      'totalAmountSpent',
+      'totalAmountWithdrew',
+      'totalAmountDeposited',
+      'records'
+    ]),
+    isSelectedDateToday() {
+      return moment().isSame(moment(this.date), 'month')
+    },
+    formatDate() {
+      return this.date ? moment(this.date).format('DD/MM/YYYY') : ''
+    }
+  },
+  methods: {
+    ...mapActions('transaction', ['getPreviousMonth', 'getNextMonth', 'setDateMonth']),
+    save(date) {
+      this.$refs.menu.save(date)
+    }
+  }
 }
 </script>

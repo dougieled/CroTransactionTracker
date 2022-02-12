@@ -1,5 +1,7 @@
 <template>
-  <v-data-table
+  <v-row>
+    <v-col class="pb-10 pt-0" cols="12">
+      <v-data-table
         dense
         :headers="headers"
         :items="records"
@@ -11,12 +13,14 @@
           showFirstLastPage: true
         }"
       ></v-data-table>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 export default {
-  name: 'Daily',
-  props:['records'],
+  name: 'TransactionTable',
+  props: ['records'],
   components: {},
   data() {
     return {
