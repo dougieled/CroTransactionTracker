@@ -34,13 +34,14 @@
                 .substr(0, 10)
             "
             min="2015-01-01"
+            :allowed-dates="allowedDates"
             @change="save"
           ></v-date-picker>
         </v-menu>
       </v-col>
       <v-col class="d-flex justify-end" cols="4">
         <v-btn
-          v-if="!isSelectedDateToday"
+          v-if="!isNextDateInFuture"
           rounded
           color="#061122"
           dark
@@ -69,11 +70,12 @@ export default {
   data() {
     return {
       activePicker: null,
-      menu: false
+      menu: false,
+      allowedDates: val => new Date(val).getDay() === 0,
     }
   },
   mounted() {
-    this.setDate()
+    this.setDateWeekly()
     this.period = 'Weekly'
   },
   watch: {
@@ -84,7 +86,7 @@ export default {
   computed: {
     ...mapFields('transaction', [
       'date',
-      'weekly'
+      'period'
     ]),
     ...mapGetters('transaction', [
       'totalAmountSpent',
@@ -92,15 +94,16 @@ export default {
       'totalAmountDeposited',
       'records'
     ]),
-    isSelectedDateToday() {
-      return moment().isSame(moment(this.date), 'day')
+    isNextDateInFuture() {
+      return moment(this.date).add(7,'d').diff(moment()) >0
+      //return moment().diff(moment(this.date).add(7,'d')) 0
     },
     formatDate() {
       return this.date ? moment(this.date).format('DD/MM/YYYY') : ''
     }
   },
   methods: {
-    ...mapActions('transaction', ['getPreviousWeek', 'getNextWeek', 'setDate']),
+    ...mapActions('transaction', ['getPreviousWeek', 'getNextWeek', 'setDateWeekly']),
     save(date) {
       this.$refs.menu.save(date)
     }

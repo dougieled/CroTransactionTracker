@@ -10,7 +10,7 @@ const TransactionModule = {
     showTransactions: true,
     showDeposits: true,
     showATMWithdrawals: true,
-    period:null
+    period: null
   },
   mutations: {
     updateField,
@@ -57,42 +57,72 @@ const TransactionModule = {
       })
     },
     getPreviousDay({ commit, state }) {
-      commit('updateDate', moment(state.date)
-      .subtract(1, 'd')
-      .format('YYYY-MM-DD'))
+      commit(
+        'updateDate',
+        moment(state.date)
+          .subtract(1, 'd')
+          .format('YYYY-MM-DD')
+      )
     },
     getNextDay({ commit, state }) {
-      commit('updateDate', moment(state.date)
-      .add(1, 'd')
-      .format('YYYY-MM-DD'))
+      commit(
+        'updateDate',
+        moment(state.date)
+          .add(1, 'd')
+          .format('YYYY-MM-DD')
+      )
     },
     getPreviousWeek({ commit, state }) {
-      commit('updateDate', moment(state.date)
-      .subtract(1, 'd')
-      .format('YYYY-MM-DD'))
+      commit(
+        'updateDate',
+        moment(state.date)
+          .subtract(7, 'd')
+          .format('YYYY-MM-DD')
+      )
     },
     getNextWeek({ commit, state }) {
-      commit('updateDate', moment(state.date)
-      .add(1, 'd')
-      .format('YYYY-MM-DD'))
+      commit(
+        'updateDate',
+        moment(state.date)
+          .add(7, 'd')
+          .format('YYYY-MM-DD')
+      )
     },
     getPreviousMonth({ commit, state }) {
-      commit('updateDate', moment(state.date)
-      .subtract(1, 'months')
-      .format('YYYY-MM-DD'))
+      commit(
+        'updateDate',
+        moment(state.date)
+          .subtract(1, 'months')
+          .format('YYYY-MM-DD')
+      )
     },
     getNextMonth({ commit, state }) {
-      commit('updateDate', moment(state.date)
-      .add(1, 'months')
-      .format('YYYY-MM-DD'))
+      commit(
+        'updateDate',
+        moment(state.date)
+          .add(1, 'months')
+          .format('YYYY-MM-DD')
+      )
     },
     setDate({ commit, state }) {
       commit('updateDate', new Date().toISOString().slice(0, 10))
     },
-    setDateMonth({ commit, state }) {
-      var date = new Date();
-      commit('updateDate', new Date(date.getFullYear(), date.getMonth(), 1, 12).toISOString().slice(0, 10))
+    setDateWeekly({ commit, state }) {
+      //Set date to be first available Sunday nearest to todays date
+      var now = new Date()
+      var today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12)
+      var lastSunday = new Date(today.setDate(today.getDate() - today.getDay()))
+      commit('updateDate', lastSunday.toISOString().slice(0, 10))
     },
+    setDateMonth({ commit, state }) {
+      var date = new Date()
+      commit(
+        'updateDate',
+        new Date(date.getFullYear(), date.getMonth(), 1, 12)
+          .toISOString()
+          .slice(0, 10)
+      )
+    }
   },
   getters: {
     getField,
@@ -111,17 +141,22 @@ const TransactionModule = {
       })
     },
     transactionsByFilter(state, getters) {
-      if(state.period ==='Daily'){
+      if (state.period === 'Daily') {
         return getters.transactions.filter(x =>
-          moment(moment(x.timestamp)).isSame(moment(getters.dateWithTime), 'day')
+          moment(x.timestamp).isSame(moment(getters.dateWithTime), 'day')
         )
-      }else if(state.period ==='Weekly'){
-        return getters.transactions.filter(x =>
-          moment(moment(x.timestamp)).isSame(moment(getters.dateWithTime), 'day')
+      } else if (state.period === 'Weekly') {
+        let endDate = moment(getters.dateWithTime).add(6, 'd')
+        return getters.transactions.filter(
+          x =>
+            moment(x.timestamp).isSameOrAfter(
+              moment(getters.dateWithTime),
+              'day'
+            ) && moment(x.timestamp).isSameOrBefore(moment(endDate), 'day')
         )
-      }else{
+      } else {
         return getters.transactions.filter(x =>
-          moment(moment(x.timestamp)).isSame(moment(getters.dateWithTime), 'month')
+          moment(x.timestamp).isSame(moment(getters.dateWithTime), 'month')
         )
       }
     },
