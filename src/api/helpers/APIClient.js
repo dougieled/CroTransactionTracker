@@ -4,12 +4,11 @@ import store from '../../Store/store.js'
 let loginUrl, logoutUrl
 
 const axiosMessagemixin = {
-  data () {
-    return {
-    }
+  data() {
+    return {}
   },
-  created: function () {
-    axios.interceptors.request.use(function (request) {
+  created: function() {
+    axios.interceptors.request.use(function(request) {
       // Do something before request is sent
       // If it hasnt already been set add the no-cache header to prevent caching of api calls
       if (!request.headers['Pragma']) {
@@ -20,10 +19,12 @@ const axiosMessagemixin = {
     })
   },
   methods: {
-    showAPIErrorToast: function (requestUrl, message) {
+    showAPIErrorToast: function(requestUrl, message) {
       let errorMessageDisplay = requestUrl
       if (message) {
-        errorMessageDisplay += ` Failed with the response: ${JSON.stringify(message)}`
+        errorMessageDisplay += ` Failed with the response: ${JSON.stringify(
+          message
+        )}`
       }
       // stToast({
       //   type: 'danger',
@@ -38,9 +39,8 @@ const axiosMessagemixin = {
 
 export { axiosMessagemixin }
 
-
-function includeBearerToken (config) {
-  let token = store.getters["user/userDetails"]?.token
+function includeBearerToken(config) {
+  let token = store.getters['user/userDetails']?.token
   // if a bearer token exists attempt to include it in the api call
   if (token) {
     const tokenHeader = {
@@ -51,7 +51,7 @@ function includeBearerToken (config) {
   return config
 }
 
-function includeNoCacheHeader (config) {
+function includeNoCacheHeader(config) {
   const noCacheHeader = {
     Pragma: 'no-cache'
   }
@@ -61,7 +61,7 @@ function includeNoCacheHeader (config) {
   return config
 }
 
-function addHeaderToConfig (config, header) {
+function addHeaderToConfig(config, header) {
   // Add the property to the existing config, otherwise create it
   if (config) {
     if (config.headers) {
@@ -78,38 +78,48 @@ function addHeaderToConfig (config, header) {
 }
 
 export default {
-  data () {
+  data() {
     return {
       apiResponse: [],
       apiError: []
     }
   },
-  setLogoutUrl (url) {
+  setLogoutUrl(url) {
     logoutUrl = url
   },
-  setLoginUrl (url) {
+  setLoginUrl(url) {
     loginUrl = url
   },
-  getLogoutUrl () {
+  getLogoutUrl() {
     return logoutUrl
   },
-  getLoginUrl () {
+  getLoginUrl() {
     return loginUrl
   },
 
-  apiGet (uri, config) {
+  apiGet(uri, config) {
     return axios.get(uri, includeNoCacheHeader(config))
   },
 
-  apiPost (uri, data, config) {
+  apiPost(uri, data, config) {
     return axios.post(uri, data, includeBearerToken(config))
   },
+  apiPostImage(uri, data) {
+    let formData = new FormData();
+    formData.append("file", data);
+    let config = {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+    return axios.post(uri, formData, includeBearerToken(config))
+  },
 
-  apiPut (uri, data, config) {
+  apiPut(uri, data, config) {
     return axios.put(uri, data, includeBearerToken(config))
   },
 
-  apiDelete (uri, config) {
+  apiDelete(uri, config) {
     return axios.delete(uri, includeBearerToken(config))
   }
 }

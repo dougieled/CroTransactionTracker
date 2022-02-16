@@ -43,6 +43,10 @@ export default {
   GetAllMyDeposits() {
     var route = this.GetRequestURL(`/transactions/MyDeposits`)
     return ApiClient.apiGet(route)
-  }
+  },
+  UploadFile(data) {
+    var route = this.GetRequestURL(`/transactions/BatchUpload`)
+    return ApiClient.apiPostImage(route, data).then()
+  },
   
 }
