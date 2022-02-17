@@ -1,6 +1,6 @@
 <template>
-  <v-container fluid>
-    <v-row v-if="userDetails" justify="center">
+  <v-col class="mt-0">
+    <v-row v-if="userDetails" class="mt-0" justify="center">
       <v-col cols="6">
         <div
           class="pa-2 text-center secondary rounded-0 rounded-pill"
@@ -20,15 +20,13 @@
         </div>
       </v-col>
     </v-row>
-    <v-row justify="center">
-      <v-col cols="12" v-if="showAccountDetails">
-        <login-register-account-details />
-      </v-col>
-      <v-col cols="12" v-if="showCroActions">
-        <cro-actions/>
-      </v-col>
+    <v-row justify="center" class="mb-3">
+      <v-slide-y-transition mode="out-in">
+        <login-register-account-details key="accountDetails" v-if="showAccountDetails" />
+        <cro-actions key="croActions" cols="12" v-if="showCroActions"/>
+      </v-slide-y-transition>
     </v-row>
-  </v-container>
+  </v-col>
 </template>
 <script>
 import LoginRegisterAccountDetails from "../components/MyAccount/LoginRegisterAccountDetails.vue";

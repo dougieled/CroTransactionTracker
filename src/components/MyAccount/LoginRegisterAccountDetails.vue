@@ -1,9 +1,9 @@
 <template>
-  <v-container fluid>
+  <v-row>
     <login v-if="showLogin && !userDetails" @show-register="showRegisterForm()" />
     <register v-if="showRegister && !userDetails" @show-login="showLoginForm()" />
     <account-details v-if="userDetails" @logout="logout()" />
-  </v-container>
+  </v-row>
 </template>
 <script>
 import Login from "../MyAccount/LoginRegisterAccountDetails/Login.vue";

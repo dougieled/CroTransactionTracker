@@ -1,6 +1,5 @@
 <template>
-  <v-layout class="mt-3" row align-center justify-center>
-    <v-flex xs11>
+  <v-col class="mt-1 mb-10" cols="10" offset="1" align-center justify-center>
       <v-card class="elevation-12">
         <v-card-text>
           <v-form ref="login" v-model="valid" lazy-validation>
@@ -27,20 +26,19 @@
           </v-form>
         </v-card-text>
         <v-card-actions class="pt-0">
-          <v-row justify="center">
-            <v-col cols="12 pb-0 pt-0">
+          <v-row>
+            <v-col cols="10" offset="1">
               <v-btn color="red darken-2" @click="goToRegisterPage" block
                 >Register</v-btn
               >
             </v-col>
-            <v-col cols="12">
+            <v-col cols="10" offset="1">
               <v-btn color="#061122" @click="login" block>Login</v-btn>
             </v-col>
           </v-row>
         </v-card-actions>
       </v-card>
-    </v-flex>
-  </v-layout>
+  </v-col>
 </template>
 <script>
 export default {

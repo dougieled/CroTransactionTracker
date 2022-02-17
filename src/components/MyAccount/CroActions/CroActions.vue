@@ -1,8 +1,6 @@
 <template>
-  <v-container fluid>
-    
-    <v-row justify="center">
-      <v-flex xs11>
+    <v-row>
+      <v-col cols="10" offset="1">
         <v-card>
           <v-card-text>
             <v-form ref="updateSettings" v-model="valid" lazy-validation>
@@ -18,18 +16,18 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-layout class="mt-3" row align-center justify-center>
-              <v-flex xs5>
+            <v-row>
+              <v-col cols="6" offset="3">
                 <v-alert
-      :value="showAlert"
-      v-model="showAlert"
-      dense
-      type="success"
-      icon="mdi-check-circle"
-      >Updated Successfully!</v-alert
-    >
-              </v-flex>
-              <v-flex xs11>
+                  :value="showAlert"
+                  v-model="showAlert"
+                  dense
+                  type="success"
+                  icon="mdi-check-circle"
+                  >Updated Successfully!</v-alert
+                >
+              </v-col>
+              <v-col cols="10" offset="1">
                 <v-btn
                   block
                   right
@@ -39,13 +37,12 @@
                   class="mb-3"
                   >Save changes</v-btn
                 >
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-card-actions>
         </v-card>
-      </v-flex>
+      </v-col>
     </v-row>
-  </v-container>
 </template>
 <script>
 export default {

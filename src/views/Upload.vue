@@ -1,19 +1,20 @@
 <template>
   <v-container fluid>
-    <v-row>
-       <v-col cols="8">
+    <v-row >
+      <v-col class="mt-2" cols="10" offset="1">
         <v-file-input
-        accept=".csv"
+          accept=".csv"
           label="Choose Transaction CSV file"
           @change="selectFile"
         ></v-file-input>
       </v-col>
-      <v-col cols="4" class="pl-2">
-        <v-btn color="success" dark small @click="upload">
+      <v-col cols="8" offset="2">
+        <v-btn color="success" dark block @click="upload">
           Upload
           <v-icon right dark>mdi-file</v-icon>
         </v-btn>
       </v-col>
+      <v-col cols="3" />
     </v-row>
   </v-container>
 </template>
@@ -32,9 +33,9 @@ export default {
       this.$router.push('/')
     },
     selectFile(file) {
-      this.currentFile = file;
+      this.currentFile = file
     },
-    upload(){
+    upload() {
       console.log(this.currentFile)
       transactionManager.UploadFile(this.currentFile).then(res => {
         if (res.status === 200) {
