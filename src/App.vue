@@ -20,7 +20,9 @@
           <router-view />
         </keep-alive>
       </v-slide-y-transition>
-      <v-bottom-navigation grow app>
+      
+    </v-main>
+    <v-bottom-navigation grow app>
         <v-btn v-if="userDetails" ripple to="/">
           <span
             :class="{
@@ -71,7 +73,6 @@
           >
         </v-btn>
       </v-bottom-navigation>
-    </v-main>
   </v-app>
 </template>
 

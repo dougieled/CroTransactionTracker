@@ -10,8 +10,12 @@
         item-key="id"
         class="elevation-1"
         :footer-props="{
-          showFirstLastPage: true
-        }"
+      showFirstLastPage: true,
+      firstIcon: 'keyboard_double_arrow_left',
+      lastIcon: 'keyboard_double_arrow_right',
+      prevIcon: 'keyboard_arrow_left',
+      nextIcon: 'keyboard_arrow_right'
+    }"
       ></v-data-table>
     </v-col>
   </v-row>
