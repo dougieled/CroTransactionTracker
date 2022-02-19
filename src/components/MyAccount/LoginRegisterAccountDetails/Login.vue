@@ -1,5 +1,5 @@
 <template>
-  <v-col class="mt-1 mb-10" cols="10" offset="1" align-center justify-center>
+  <v-col class="mt-3 mb-10" cols="10" offset="1" align-center justify-center>
       <v-card class="elevation-12">
         <v-card-text>
           <v-form ref="login" v-model="valid" lazy-validation>
