@@ -19,7 +19,7 @@
             <v-text-field
               v-model="formatDate"
               label="Selected Date"
-              prepend-icon="mdi-calendar"
+              prepend-icon="calendar_today"
               readonly
               v-bind="attrs"
               v-on="on"

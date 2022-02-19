@@ -23,7 +23,7 @@
                   v-model="showAlert"
                   dense
                   type="success"
-                  icon="mdi-check-circle"
+                  icon="check_circle_outline"
                   >Updated Successfully!</v-alert
                 >
               </v-col>

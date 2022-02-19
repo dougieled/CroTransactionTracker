@@ -11,7 +11,7 @@
       <v-col cols="8" offset="2">
         <v-btn color="success" dark block @click="upload">
           Upload
-          <v-icon right dark>mdi-file</v-icon>
+          <v-icon right dark>upload_file</v-icon>
         </v-btn>
       </v-col>
       <v-col cols="3" />
