@@ -1,7 +1,11 @@
 import ApiClient from './helpers/APIClient.js'
 export default {
   GetRequestURL(route) {
-    return 'http://localhost:4000' + route
+    let url = 'https://mysql-backend.herokuapp.com'
+    if(process.env.NODE_ENV == 'development'){
+      url = 'http://localhost:4000'
+    }
+    return url + route
   },
   GetAll() {
     var route = this.GetRequestURL(`/transactions`)
