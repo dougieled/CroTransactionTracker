@@ -28,6 +28,7 @@
         v-if="userDetails"
         ripple
         to="/"
+        style="height: 56px;"
         :class="{
           'teal--text': routeName == 'home',
           'grey--text': routeName != 'home'
@@ -37,6 +38,7 @@
         <v-icon dark>home</v-icon>
       </v-btn>
       <v-btn
+        style="height: 56px;"
         v-if="userDetails"
         to="/Upload"
         :class="{
@@ -49,6 +51,7 @@
       </v-btn>
       <v-btn
         to="/MyAccount"
+        style="height: 56px;"
         :class="{
           'teal--text': routeName == 'MyAccount',
           'grey--text': routeName != 'MyAccount'
