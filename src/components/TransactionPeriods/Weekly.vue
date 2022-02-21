@@ -76,6 +76,7 @@ export default {
   },
   mounted() {
     this.setDateWeekly()
+    this.getData()
     this.period = 'Weekly'
   },
   watch: {
@@ -106,6 +107,9 @@ export default {
     ...mapActions('transaction', ['getPreviousWeek', 'getNextWeek', 'setDateWeekly']),
     save(date) {
       this.$refs.menu.save(date)
+    },
+    getData() {
+      this.$store.dispatch('transaction/getMyRecords').then(res => {})
     }
   }
 }

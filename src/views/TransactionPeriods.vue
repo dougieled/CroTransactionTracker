@@ -65,13 +65,8 @@ export default {
       }
     }
   },
-  mounted() {
-    this.getData()
-  },
   methods: {
-    getData() {
-      this.$store.dispatch('transaction/getMyRecords').then(res => {})
-    }
+    
   }
 }
 </script>

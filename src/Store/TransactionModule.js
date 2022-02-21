@@ -10,7 +10,8 @@ const TransactionModule = {
     showTransactions: true,
     showDeposits: true,
     showATMWithdrawals: true,
-    period: null
+    period: null,
+    isLoading:false
   },
   mutations: {
     updateField,
@@ -23,11 +24,15 @@ const TransactionModule = {
     },
     updateDate(state, data) {
       state.date = data
+    },
+    updateIsLoading(state, data) {
+      state.isLoading = data
     }
   },
   actions: {
     getMyRecords({ commit }) {
       commit('updateTransactions', [])
+      commit('updateIsLoading',true)
       transactionManager
         .GetAllMyRecords()
         .then(res => {
@@ -38,6 +43,8 @@ const TransactionModule = {
         .catch(() => {
           commit('user/updateUserDetails', null, { root: true })
           commit('user/updateLastApiCalledMade', null, { root: true })
+        }).finally(() =>{
+          commit('updateIsLoading',false)
         })
     },
     updateTransactionByID({ commit }, data) {

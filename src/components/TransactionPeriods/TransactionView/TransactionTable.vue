@@ -9,6 +9,9 @@
         :item-class="row_classes"
         item-key="id"
         class="elevation-1"
+        :loading="isLoading"
+        :mobile-breakpoint="0"
+    loading-text="Loading... Please wait"
         :footer-props="{
       showFirstLastPage: true,
       firstIcon: 'keyboard_double_arrow_left',
@@ -22,6 +25,7 @@
 </template>
 
 <script>
+import { mapFields } from 'vuex-map-fields'
 export default {
   name: 'TransactionTable',
   props: ['records'],
@@ -45,6 +49,11 @@ export default {
         return 'red lighten-1'
       }
     }
+  },
+  computed:{
+    ...mapFields('transaction', [
+      'isLoading'
+    ]),
   }
 }
 </script>

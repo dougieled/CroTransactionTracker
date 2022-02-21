@@ -73,6 +73,7 @@ export default {
   },
   mounted() {
     this.setDateMonth()
+    this.getData()
     this.period = 'Monthly'
   },
   computed: {
@@ -97,6 +98,9 @@ export default {
     ...mapActions('transaction', ['getPreviousMonth', 'getNextMonth', 'setDateMonth']),
     save(date) {
       this.$refs.menu.save(date)
+    },
+    getData() {
+      this.$store.dispatch('transaction/getMyRecords').then(res => {})
     }
   }
 }

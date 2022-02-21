@@ -74,6 +74,7 @@ export default {
   },
   mounted() {
     this.setDate()
+    this.getData()
     this.period = 'Daily'
   },
   watch: {
@@ -103,6 +104,9 @@ export default {
     ...mapActions('transaction', ['getPreviousDay', 'getNextDay', 'setDate']),
     save(date) {
       this.$refs.menu.save(date)
+    },
+    getData() {
+      this.$store.dispatch('transaction/getMyRecords').then(res => {})
     }
   }
 }
