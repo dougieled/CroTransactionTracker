@@ -22,7 +22,7 @@
       </v-slide-y-transition>
       
     </v-main>
-    <v-bottom-navigation grow app>
+    <v-bottom-navigation app>
         <v-btn v-if="userDetails" ripple to="/">
           <span
             :class="{
