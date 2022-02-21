@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar fixed color="#061122" dark>
+    <v-app-bar fixed color="#061122" dark app>
       <router-link to="/">
       <v-img
         class="mr-7"
