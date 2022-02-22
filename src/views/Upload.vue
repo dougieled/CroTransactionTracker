@@ -14,7 +14,16 @@
           <v-icon right dark>upload_file</v-icon>
         </v-btn>
       </v-col>
-      <v-col cols="3" />
+       <v-col cols="6" offset="3">
+                <v-alert
+                  :value="showAlert"
+                  v-model="showAlert"
+                  dense
+                  type="success"
+                  icon="check_circle_outline"
+                  >Updated Successfully!</v-alert
+                >
+              </v-col>
     </v-row>
   </v-container>
 </template>
@@ -25,7 +34,8 @@ export default {
   mounted() {},
   data() {
     return {
-      currentFile: null
+      currentFile: null,
+      showAlert: false
     }
   },
   methods: {
@@ -36,10 +46,14 @@ export default {
       this.currentFile = file
     },
     upload() {
-      console.log(this.currentFile)
+      let self = this
       transactionManager.UploadFile(this.currentFile).then(res => {
         if (res.status === 200) {
-          console.log('file uploaded')
+          self.showAlert = true
+          setTimeout(() => {
+              self.showAlert = false
+              self.gotoHome()
+            }, 1500)
           this.currentFile = null
         }
       })

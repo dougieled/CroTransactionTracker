@@ -32,7 +32,8 @@ const TransactionModule = {
   },
   actions: {
     getMyRecords({ commit }) {
-      commit('updateTransactions', [])
+      return  new Promise((resolve, reject) => {
+        commit('updateTransactions', [])
       commit('updateIsLoading',true)
       transactionManager
         .GetAllMyRecords()
@@ -44,9 +45,12 @@ const TransactionModule = {
         .catch(() => {
           commit('user/updateUserDetails', null, { root: true })
           commit('user/updateLastApiCalledMade', null, { root: true })
+          reject()
         }).finally(() =>{
           commit('updateIsLoading',false)
+          resolve()
         })
+      });
     },
     updateTransactionByID({ commit }, data) {
       transactionManager.updateTransactionByID(data, data.id).then(res => {
