@@ -1,6 +1,6 @@
 import transactionManager from '../api/transactionManager'
 import { getField, updateField } from 'vuex-map-fields'
-
+import getSymbolFromCurrency from 'currency-symbol-map'
 import moment from 'moment'
 const TransactionModule = {
   namespaced: true,
@@ -241,6 +241,10 @@ const TransactionModule = {
       return array.sort((a, b) =>
         a.timestamp > b.timestamp ? 1 : b.timestamp > a.timestamp ? -1 : 0
       )
+    },
+    currencySymbol(state){
+      let currencyText = state.transactions.length>0?state.transactions[0].nativeCurrency:''
+      return currencyText?getSymbolFromCurrency(currencyText) :'£'
     }
   }
 }
