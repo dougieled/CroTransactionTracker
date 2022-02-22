@@ -49,6 +49,18 @@
           >
         </v-card>
       </v-col>
+      <v-col class="mt-2" cols="12" key="statistics">
+        <v-card :to="'/Statistics'" class="pa-2 text-center" outlined tile>
+          Statistics
+          <br>
+           <v-icon
+            dark
+            large
+            class="teal--text"
+            >query_stats</v-icon
+          >
+        </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>

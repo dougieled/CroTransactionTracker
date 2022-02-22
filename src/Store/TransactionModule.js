@@ -143,10 +143,10 @@ const TransactionModule = {
         let minutesToAdd = rootGetters['setting/utcOffsetTimeDifference']
         return {
           ...x,
-          timestamp: moment(x.timestamp).add(minutesToAdd, 'minutes'),
           timestampFormatted: moment(x.timestamp)
             .add(minutesToAdd, 'minutes')
             .format('DD/MM/YYYY HH:mm'),
+          timestamp: moment(x.timestamp).add(minutesToAdd, 'minutes'),
           amountFormatted: Math.abs(x.amount),
           isDepositFormatted: x.isDeposit ? 'Yes' : 'No'
         }
@@ -206,6 +206,19 @@ const TransactionModule = {
       }
       return sum.toFixed(2)
     },
+    totalAmountSpentOverall(state, getters) {
+      let amounts = state.showATMWithdrawals
+        ? getters.transactions.filter(x => !x.isDeposit)
+        : getters.transactions.filter(
+            x => !x.isDeposit && x.description !== 'ATM'
+          )
+      let amountsTotal = amounts.map(x => x.amountFormatted)
+      var sum = 0
+      for (var i = 0; i < amountsTotal.length; i++) {
+        sum += amountsTotal[i]
+      }
+      return sum.toFixed(2)
+    },
     totalAmountWithdrew(state, getters) {
       let amounts = getters.transactionNoDeposit.filter(
         x => !x.isDeposit && x.description === 'ATM'
@@ -245,6 +258,14 @@ const TransactionModule = {
       return array.sort((a, b) =>
         a.timestamp > b.timestamp ? 1 : b.timestamp > a.timestamp ? -1 : 0
       )
+    },
+    averageDailySpend(state, getters){
+      
+      var arr = getters.transactions.map(x =>moment(x.timestamp).format('DD/MM/YYYY'));
+var uniqueDates = [...new Set(arr)]
+let uniqueNumberOfDays = uniqueDates.length
+let amount = getters.totalAmountSpentOverall/uniqueNumberOfDays
+      return amount.toFixed(2)
     },
     currencySymbol(state){
       let currencyText = state.transactions.length>0?state.transactions[0].nativeCurrency:''
