@@ -25,6 +25,7 @@
     <daily v-if="periodicity === 'Daily'" />
     <weekly v-if="periodicity === 'Weekly'" />
     <monthly v-if="periodicity === 'Monthly'" />
+    <custom v-if="periodicity === 'Custom'" />
   </v-container>
 </template>
 
@@ -32,35 +33,47 @@
 import Daily from '../components/TransactionPeriods/Daily.vue'
 import Weekly from '../components/TransactionPeriods/Weekly.vue'
 import Monthly from '../components/TransactionPeriods/Monthly.vue'
+import Custom from '../components/TransactionPeriods/Custom.vue'
 import moment from 'moment'
+import { mapFields } from 'vuex-map-fields'
 import { mapGetters } from 'vuex'
 export default {
   name: 'TransactionPeriods',
   props: ['periodicity'],
-  components: { Daily, Weekly, Monthly },
+  components: { Daily, Weekly, Monthly, Custom },
   computed: {
     ...mapGetters('transaction', [
-      'dateWithTime'
+      'dateWithTime',
+      'endDateWithTime'
+    ]),
+    ...mapFields('transaction', [
+      'date',
+      'endDate'
     ]),
     userDetails() {
       return this.$store.getters['user/userDetails']
     },
     formatDateDay() {
-      return this.dateWithTime ? moment(this.dateWithTime).format('DD/MM/YYYY') : ''
+      return this.date ? moment(this.dateWithTime).format('DD/MM/YYYY') : 'Choose your Date'
     },
     formatDateWeekly() {
       let endDate = moment(this.dateWithTime).add(6, 'd')
-      return this.dateWithTime ? `${moment(this.dateWithTime).format('DD/MM/YYYY')} - ${moment(endDate).format('DD/MM/YYYY')}` : ''
+      return this.date ? `${moment(this.dateWithTime).format('DD/MM/YYYY')} - ${moment(endDate).format('DD/MM/YYYY')}` : 'Choose your Date'
     },
     formatDateMonthly() {
-      return this.dateWithTime ? moment(this.dateWithTime).format('MMMM') : ''
+      return this.date ? moment(this.dateWithTime).format('MMMM') : 'Choose your Date'
+    },
+    formatDateCustom() {
+      return this.date && this.endDate ? `${moment(this.dateWithTime).format('DD/MM/YYYY')} - ${moment(this.endDateWithTime).format('DD/MM/YYYY')}` : 'Choose your Dates'
     },
     periodicityWithDate() {
       if (this.periodicity === 'Daily') {
         return `${this.periodicity} (${this.formatDateDay})`
       } else if (this.periodicity === 'Weekly') {
         return `${this.periodicity} (${this.formatDateWeekly})`
-      } else {
+      } else if(this.periodicity==='Custom'){
+        return `${this.periodicity} (${this.formatDateCustom})`
+      }else{
         return `${this.periodicity} (${this.formatDateMonthly})`
       }
     }

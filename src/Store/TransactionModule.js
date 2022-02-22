@@ -7,6 +7,7 @@ const TransactionModule = {
   state: {
     transactions: [],
     date: null,
+    endDate:null,
     showTransactions: true,
     showDeposits: true,
     showATMWithdrawals: true,
@@ -154,12 +155,21 @@ const TransactionModule = {
         )
       } else if (state.period === 'Weekly') {
         let endDate = moment(getters.dateWithTime).add(6, 'd')
+        endDate = moment(endDate).add(12, 'h')
         return getters.transactions.filter(
           x =>
             moment(x.timestamp).isSameOrAfter(
               moment(getters.dateWithTime),
               'day'
             ) && moment(x.timestamp).isSameOrBefore(moment(endDate), 'day')
+        )
+      }else if (state.period === 'Custom') {
+        return getters.transactions.filter(
+          x =>
+            moment(x.timestamp).isSameOrAfter(
+              moment(getters.dateWithTime),
+              'day'
+            ) && moment(x.timestamp).isSameOrBefore(moment(getters.endDateWithTime), 'day')
         )
       } else {
         return getters.transactions.filter(x =>
@@ -175,6 +185,9 @@ const TransactionModule = {
     },
     dateWithTime(state) {
       return moment(state.date).add(12, 'hours')
+    },
+    endDateWithTime(state) {
+      return moment(state.endDate).add(12, 'hours')
     },
     totalAmountSpent(state, getters) {
       let amounts = state.showATMWithdrawals
