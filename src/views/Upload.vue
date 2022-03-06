@@ -6,6 +6,7 @@
           accept=".csv"
           label="Choose Transaction CSV file"
           @change="selectFile"
+          :key="componentKey"
         ></v-file-input>
       </v-col>
       <v-col cols="8" offset="2">
@@ -35,7 +36,8 @@ export default {
   data() {
     return {
       currentFile: null,
-      showAlert: false
+      showAlert: false,
+      componentKey:0
     }
   },
   methods: {
@@ -55,6 +57,7 @@ export default {
               self.gotoHome()
             }, 1500)
           this.currentFile = null
+          this.componentKey++
         }
       })
     }
