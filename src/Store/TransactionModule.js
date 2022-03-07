@@ -305,9 +305,9 @@ const TransactionModule = {
           total: parseInt(sum.toFixed(2))
         }
       })
-      const lowestAmount = groupArrays.reduce(function(prev, current) {
+      const lowestAmount = groupArrays.reduce((prev, current) => {
         return (prev.total < current.total) ? prev : current
-    }) //returns object
+    },[]) //returns object
       return lowestAmount
     },
     dearestDay(state, getters) {
@@ -337,9 +337,9 @@ const TransactionModule = {
           total: parseInt(sum.toFixed(2))
         }
       })
-      const dearestAmount = groupArrays.reduce(function(prev, current) {
+      const dearestAmount = groupArrays.reduce((prev, current) => {
         return (prev.total > current.total) ? prev : current
-    }) //returns object
+    },[]) //returns object
       return dearestAmount
     }
   }

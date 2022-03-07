@@ -21,7 +21,7 @@
           ></v-card-title>
 
           <v-card-actions>
-            <v-btn class="" outlined rounded block color="teal">
+            <v-btn class="" outlined rounded block color="teal" :loading="isLoading" :to="dearestDayLink">
               {{ currencySymbol }} {{ dearestDay.total }} ({{dearestDay.formattedDate}})
             </v-btn>
           </v-card-actions>
@@ -35,7 +35,7 @@
           ></v-card-title>
 
           <v-card-actions>
-            <v-btn class="" outlined rounded block color="teal">
+            <v-btn class="" outlined rounded block color="teal" :loading="isLoading">
               {{ currencySymbol }} {{ averageDailySpend }}
             </v-btn>
           </v-card-actions>
@@ -49,7 +49,7 @@
           ></v-card-title>
 
           <v-card-actions>
-            <v-btn class="" outlined rounded block color="teal">
+            <v-btn class="" outlined rounded block color="teal" :loading="isLoading" :to="cheapestDayLink">
               {{ currencySymbol }} {{ cheapestDay.total }} ({{cheapestDay.formattedDate}})
             </v-btn>
           </v-card-actions>
@@ -78,7 +78,8 @@ export default {
   },
   computed: {
     ...mapFields('transaction', [
-      'period'
+      'period',
+      'isLoading'
     ]),
     ...mapGetters('transaction', [
       'transactions',
@@ -86,7 +87,13 @@ export default {
       'averageDailySpend',
       'cheapestDay',
       'dearestDay'
-    ])
+    ]),
+    dearestDayLink(){
+      return {path:'/TransactionPeriods/Daily',query:{selectedDate:this.dearestDay.formattedDate}}
+    },
+    cheapestDayLink(){
+      return {path:'/TransactionPeriods/Daily',query:{selectedDate:this.cheapestDay.formattedDate}}
+    }
   }
 }
 </script>

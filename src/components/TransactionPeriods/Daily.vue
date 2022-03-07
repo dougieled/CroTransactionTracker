@@ -73,9 +73,16 @@ export default {
     }
   },
   mounted() {
-    this.setDate()
+    if(this.$route.query.selectedDate){
+      console.log('update date')
+      console.log(moment(this.$route.query.selectedDate,'DD/MM/YYYY').format('YYYY-MM-DD'))
+      this.date = moment(this.$route.query.selectedDate,'DD/MM/YYYY').format('YYYY-MM-DD')
+    }else{
+      this.setDate()
+    }
     this.getData()
     this.period = 'Daily'
+    
   },
   watch: {
     menu(val) {
