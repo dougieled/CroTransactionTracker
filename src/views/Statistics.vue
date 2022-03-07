@@ -13,7 +13,7 @@
           Back to Home
         </v-card>
       </v-col>
-      <!-- <v-col class="mt-2" cols="4">
+      <v-col class="mt-2" cols="4">
         <v-card dark>
           <v-card-title
             class="text-h7 justify-center"
@@ -22,12 +22,12 @@
 
           <v-card-actions>
             <v-btn class="" outlined rounded block color="teal">
-              {{ currencySymbol }} {{ averageDailySpend }}
+              {{ currencySymbol }} {{ dearestDay.total }} ({{dearestDay.formattedDate}})
             </v-btn>
           </v-card-actions>
         </v-card>
-      </v-col> -->
-      <v-col class="mt-2" cols="12">
+      </v-col>
+      <v-col class="mt-2" cols="4">
         <v-card dark>
           <v-card-title
             class="text-h7 justify-center"
@@ -41,7 +41,7 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <!-- <v-col class="mt-2" cols="4">
+      <v-col class="mt-2" cols="4">
         <v-card dark>
           <v-card-title
             class="text-h7 justify-center"
@@ -50,24 +50,26 @@
 
           <v-card-actions>
             <v-btn class="" outlined rounded block color="teal">
-              {{ currencySymbol }} {{ averageDailySpend }}
+              {{ currencySymbol }} {{ cheapestDay.total }} ({{cheapestDay.formattedDate}})
             </v-btn>
           </v-card-actions>
         </v-card>
-      </v-col> -->
+      </v-col>
     </v-row>
   </v-container>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { mapFields } from 'vuex-map-fields'
 export default {
-  name: 'Upload',
+  name: 'Statistics',
   mounted() {},
   data() {
     return {}
   },
   mounted() {
     this.getData()
+    this.period = 'All'
   },
   methods: {
     getData() {
@@ -75,10 +77,15 @@ export default {
     }
   },
   computed: {
+    ...mapFields('transaction', [
+      'period'
+    ]),
     ...mapGetters('transaction', [
       'transactions',
       'currencySymbol',
-      'averageDailySpend'
+      'averageDailySpend',
+      'cheapestDay',
+      'dearestDay'
     ])
   }
 }

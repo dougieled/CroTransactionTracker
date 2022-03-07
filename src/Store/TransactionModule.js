@@ -7,12 +7,12 @@ const TransactionModule = {
   state: {
     transactions: [],
     date: null,
-    endDate:null,
+    endDate: null,
     showTransactions: true,
     showDeposits: true,
     showATMWithdrawals: true,
     period: null,
-    isLoading:false
+    isLoading: false
   },
   mutations: {
     updateField,
@@ -32,25 +32,26 @@ const TransactionModule = {
   },
   actions: {
     getMyRecords({ commit }) {
-      return  new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         commit('updateTransactions', [])
-      commit('updateIsLoading',true)
-      transactionManager
-        .GetAllMyRecords()
-        .then(res => {
-          if (res.status === 200) {
-            commit('updateTransactions', res.data)
-          }
-        })
-        .catch(() => {
-          commit('user/updateUserDetails', null, { root: true })
-          commit('user/updateLastApiCalledMade', null, { root: true })
-          reject()
-        }).finally(() =>{
-          commit('updateIsLoading',false)
-          resolve()
-        })
-      });
+        commit('updateIsLoading', true)
+        transactionManager
+          .GetAllMyRecords()
+          .then(res => {
+            if (res.status === 200) {
+              commit('updateTransactions', res.data)
+            }
+          })
+          .catch(() => {
+            commit('user/updateUserDetails', null, { root: true })
+            commit('user/updateLastApiCalledMade', null, { root: true })
+            reject()
+          })
+          .finally(() => {
+            commit('updateIsLoading', false)
+            resolve()
+          })
+      })
     },
     updateTransactionByID({ commit }, data) {
       transactionManager.updateTransactionByID(data, data.id).then(res => {
@@ -167,18 +168,24 @@ const TransactionModule = {
               'day'
             ) && moment(x.timestamp).isSameOrBefore(moment(endDate), 'day')
         )
-      }else if (state.period === 'Custom') {
+      } else if (state.period === 'Custom') {
         return getters.transactions.filter(
           x =>
             moment(x.timestamp).isSameOrAfter(
               moment(getters.dateWithTime),
               'day'
-            ) && moment(x.timestamp).isSameOrBefore(moment(getters.endDateWithTime), 'day')
+            ) &&
+            moment(x.timestamp).isSameOrBefore(
+              moment(getters.endDateWithTime),
+              'day'
+            )
         )
-      } else {
+      } else if(state.period ==='Monthly') {
         return getters.transactions.filter(x =>
           moment(x.timestamp).isSame(moment(getters.dateWithTime), 'month')
         )
+      }else{
+        return getters.transactions
       }
     },
     deposits(state, getters) {
@@ -207,11 +214,7 @@ const TransactionModule = {
       return sum.toFixed(2)
     },
     totalAmountSpentOverall(state, getters) {
-      let amounts = state.showATMWithdrawals
-        ? getters.transactions.filter(x => !x.isDeposit)
-        : getters.transactions.filter(
-            x => !x.isDeposit && x.description !== 'ATM'
-          )
+      let amounts = getters.transactionNoDeposit
       let amountsTotal = amounts.map(x => x.amountFormatted)
       var sum = 0
       for (var i = 0; i < amountsTotal.length; i++) {
@@ -259,17 +262,85 @@ const TransactionModule = {
         a.timestamp > b.timestamp ? 1 : b.timestamp > a.timestamp ? -1 : 0
       )
     },
-    averageDailySpend(state, getters){
-      
-      var arr = getters.transactions.map(x =>moment(x.timestamp).format('DD/MM/YYYY'));
-var uniqueDates = [...new Set(arr)]
-let uniqueNumberOfDays = uniqueDates.length
-let amount = getters.totalAmountSpentOverall/uniqueNumberOfDays
+    averageDailySpend(state, getters) {
+      var arr = getters.transactions.map(x =>
+        moment(x.timestamp).format('DD/MM/YYYY')
+      )
+      var uniqueDates = [...new Set(arr)]
+      let uniqueNumberOfDays = uniqueDates.length
+      let amount = getters.totalAmountSpentOverall / uniqueNumberOfDays
       return amount.toFixed(2)
     },
-    currencySymbol(state){
-      let currencyText = state.transactions.length>0?state.transactions[0].nativeCurrency:''
-      return currencyText?getSymbolFromCurrency(currencyText) :'£'
+    currencySymbol(state) {
+      let currencyText =
+        state.transactions.length > 0
+          ? state.transactions[0].nativeCurrency
+          : ''
+      return currencyText ? getSymbolFromCurrency(currencyText) : '£'
+    },
+    cheapestDay(state, getters) {
+      // this gives an object with dates as keys
+      const groups = getters.transactionNoDeposit.reduce((groups, transaction) => {
+        let date = transaction.timestamp.format().split('T')[0]
+        if (!groups[date]) {
+          groups[date] = []
+        }
+        groups[date].push(transaction)
+        return groups
+      }, {})
+      // Edit: to add it in the array format instead
+      const groupArrays = Object.keys(groups).map(date => {
+
+        var sum = 0
+        let selectedGroup = groups[date]
+
+        let amountsTotal = selectedGroup.map(x => x.amountFormatted)
+
+        for (var i = 0; i < amountsTotal.length; i++) {
+          sum += amountsTotal[i]
+        }
+        return {
+          date,
+          formattedDate:moment(date).format('DD/MM/YYYY'),
+          total: parseInt(sum.toFixed(2))
+        }
+      })
+      const lowestAmount = groupArrays.reduce(function(prev, current) {
+        return (prev.total < current.total) ? prev : current
+    }) //returns object
+      return lowestAmount
+    },
+    dearestDay(state, getters) {
+      // this gives an object with dates as keys
+      const groups = getters.transactionNoDeposit.reduce((groups, transaction) => {
+        let date = transaction.timestamp.format().split('T')[0]
+        if (!groups[date]) {
+          groups[date] = []
+        }
+        groups[date].push(transaction)
+        return groups
+      }, {})
+      // Edit: to add it in the array format instead
+      const groupArrays = Object.keys(groups).map(date => {
+
+        var sum = 0
+        let selectedGroup = groups[date]
+
+        let amountsTotal = selectedGroup.map(x => x.amountFormatted)
+
+        for (var i = 0; i < amountsTotal.length; i++) {
+          sum += amountsTotal[i]
+        }
+        return {
+          date,
+          formattedDate:moment(date).format('DD/MM/YYYY'),
+          total: parseInt(sum.toFixed(2))
+        }
+      })
+      const dearestAmount = groupArrays.reduce(function(prev, current) {
+        return (prev.total > current.total) ? prev : current
+    }) //returns object
+      return dearestAmount
     }
   }
 }
