@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="p-0 mt-2">
     <v-row no-gutters >
-      <v-col cols="4" key="daily">
+      <v-col class="mb-2" cols="12" sm="12" md="4" key="daily">
         <v-card :to="'/TransactionPeriods/Daily'" class="pa-2 text-center" outlined tile>
           Daily
           <br>
@@ -13,7 +13,7 @@
           >
         </v-card>
       </v-col>
-      <v-col cols="4" key="weekly">
+      <v-col class="mb-2" cols="12" sm="12" md="4" key="weekly">
         <v-card :to="'/TransactionPeriods/Weekly'" class="pa-2 text-center" outlined tile>
           Weekly
           <br>
@@ -25,7 +25,7 @@
           >
         </v-card>
       </v-col>
-      <v-col cols="4" key="monthly">
+      <v-col class="mb-2" cols="12" sm="12" md="4" key="monthly">
         <v-card :to="'/TransactionPeriods/Monthly'" class="pa-2 text-center" outlined tile>
           Monthly
           <br>
@@ -37,7 +37,7 @@
           >
         </v-card>
       </v-col>
-       <v-col class="mt-2" cols="12" key="custom">
+       <v-col class="mb-2" cols="12" key="custom">
         <v-card :to="'/TransactionPeriods/Custom'" class="pa-2 text-center" outlined tile>
           Custom
           <br>
@@ -49,7 +49,7 @@
           >
         </v-card>
       </v-col>
-      <v-col class="mt-2" cols="12" key="statistics">
+      <v-col class="mb-2" cols="12" key="statistics">
         <v-card :to="'/Statistics'" class="pa-2 text-center" outlined tile>
           Statistics
           <br>
