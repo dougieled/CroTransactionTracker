@@ -302,7 +302,7 @@ const TransactionModule = {
         return {
           date,
           formattedDate:moment(date).format('DD/MM/YYYY'),
-          total: parseInt(sum.toFixed(2))
+          total: parseFloat(sum.toFixed(2))
         }
       })
       const lowestAmount = groupArrays.reduce((prev, current) => {
@@ -334,7 +334,7 @@ const TransactionModule = {
         return {
           date,
           formattedDate:moment(date).format('DD/MM/YYYY'),
-          total: parseInt(sum.toFixed(2))
+          total: parseFloat(sum.toFixed(2))
         }
       })
       const dearestAmount = groupArrays.reduce((prev, current) => {

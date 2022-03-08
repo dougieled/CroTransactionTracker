@@ -13,7 +13,7 @@
           Back to Home
         </v-card>
       </v-col>
-      <v-col class="mt-2" cols="4">
+      <v-col class="mt-2 pb-0" sm="12" md="4">
         <v-card dark>
           <v-card-title
             class="text-h7 justify-center"
@@ -27,7 +27,7 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col class="mt-2" cols="4">
+      <v-col class="mt-2 pb-0" sm="12" md="4">
         <v-card dark>
           <v-card-title
             class="text-h7 justify-center"
@@ -41,7 +41,7 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col class="mt-2" cols="4">
+      <v-col class="mt-2 pb-0" sm="12" md="4">
         <v-card dark>
           <v-card-title
             class="text-h7 justify-center"
@@ -55,15 +55,23 @@
           </v-card-actions>
         </v-card>
       </v-col>
+       <v-col class="pb-8" sm="12" md="4">
+        <doughnut-month-chart class="pa-6"/>
+      </v-col>
+      <v-col class="pb-8" cols="12">
+      </v-col>
     </v-row>
   </v-container>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import { mapFields } from 'vuex-map-fields'
+import DoughnutMonthChart from '../components/Statistics/Charts/DoughnutMonthChart.vue'
 export default {
   name: 'Statistics',
-  mounted() {},
+  components:{
+    DoughnutMonthChart
+  },
   data() {
     return {}
   },
