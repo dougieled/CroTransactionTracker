@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row v-if="transactions.length>0">
       <v-col cols="12">
         <v-card
           :to="'/'"
@@ -13,7 +13,7 @@
           Back to Home
         </v-card>
       </v-col>
-      <v-col class="mt-2 pb-0" sm="12" md="4">
+      <v-col cols="12" class="mt-2 pb-0" sm="12" md="4">
         <v-card dark>
           <v-card-title
             class="text-h7 justify-center"
@@ -37,7 +37,7 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col class="mt-2 pb-0" sm="12" md="4">
+      <v-col cols="12" class="mt-2 pb-0" sm="12" md="4">
         <v-card dark>
           <v-card-title
             class="text-h7 justify-center"
@@ -58,7 +58,7 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col class="mt-2 pb-0" sm="12" md="4">
+      <v-col cols="12" class="mt-2 pb-0" sm="12" md="4">
         <v-card dark>
           <v-card-title
             class="text-h7 justify-center"
@@ -82,10 +82,20 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col class="pb-8" sm="12" md="4">
+      <v-col cols="12" class="pb-8" sm="12" md="4">
         <doughnut-month-chart class="pa-6" />
       </v-col>
-      <v-col class="pb-8" cols="12"> </v-col>
+      <v-col cols="12" class="pb-8" md="12"> </v-col>
+    </v-row>
+    <v-row v-else class="mt-3">
+       <v-col cols="12">
+        <v-alert
+                  dense
+                  type="error"
+                  icon="error_outline"
+                  >You have no Transactions!</v-alert
+                >
+      </v-col>
     </v-row>
   </v-container>
 </template>
