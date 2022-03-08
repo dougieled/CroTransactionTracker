@@ -85,6 +85,9 @@
       <v-col cols="12" class="pb-8" sm="12" md="4">
         <doughnut-month-chart class="pa-6" />
       </v-col>
+      <v-col cols="12" class="pb-8" sm="12" md="8">
+        <bar-daily-chart class="pa-6" />
+      </v-col>
       <v-col cols="12" class="pb-8" md="12"> </v-col>
     </v-row>
     <v-row v-else class="mt-3">
@@ -103,10 +106,12 @@
 import { mapGetters } from 'vuex'
 import { mapFields } from 'vuex-map-fields'
 import DoughnutMonthChart from '../components/Statistics/Charts/DoughnutMonthChart.vue'
+import BarDailyChart from '../components/Statistics/Charts/BarDailyChart.vue'
 export default {
   name: 'Statistics',
   components: {
-    DoughnutMonthChart
+    DoughnutMonthChart,
+    BarDailyChart
   },
   data() {
     return {}
