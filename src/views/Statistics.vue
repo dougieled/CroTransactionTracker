@@ -21,8 +21,18 @@
           ></v-card-title>
 
           <v-card-actions>
-            <v-btn class="" outlined rounded block color="teal" :loading="isLoading" :to="dearestDayLink">
-              {{ currencySymbol }} {{ dearestDay.total }} ({{dearestDay.formattedDate}})
+            <v-btn
+              class=""
+              outlined
+              rounded
+              block
+              color="teal"
+              :loading="isLoading"
+              :to="dearestDayLink"
+            >
+              {{ currencySymbol }} {{ dearestDay.total }} ({{
+                dearestDay.formattedDate
+              }})
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -35,7 +45,14 @@
           ></v-card-title>
 
           <v-card-actions>
-            <v-btn class="" outlined rounded block color="teal" :loading="isLoading">
+            <v-btn
+              class=""
+              outlined
+              rounded
+              block
+              color="teal"
+              :loading="isLoading"
+            >
               {{ currencySymbol }} {{ averageDailySpend }}
             </v-btn>
           </v-card-actions>
@@ -49,17 +66,26 @@
           ></v-card-title>
 
           <v-card-actions>
-            <v-btn class="" outlined rounded block color="teal" :loading="isLoading" :to="cheapestDayLink">
-              {{ currencySymbol }} {{ cheapestDay.total }} ({{cheapestDay.formattedDate}})
+            <v-btn
+              class=""
+              outlined
+              rounded
+              block
+              color="teal"
+              :loading="isLoading"
+              :to="cheapestDayLink"
+            >
+              {{ currencySymbol }} {{ cheapestDay.total }} ({{
+                cheapestDay.formattedDate
+              }})
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
-       <v-col class="pb-8" sm="12" md="4">
-        <doughnut-month-chart class="pa-6"/>
+      <v-col class="pb-8" sm="12" md="4">
+        <doughnut-month-chart class="pa-6" />
       </v-col>
-      <v-col class="pb-8" cols="12">
-      </v-col>
+      <v-col class="pb-8" cols="12"> </v-col>
     </v-row>
   </v-container>
 </template>
@@ -69,26 +95,33 @@ import { mapFields } from 'vuex-map-fields'
 import DoughnutMonthChart from '../components/Statistics/Charts/DoughnutMonthChart.vue'
 export default {
   name: 'Statistics',
-  components:{
+  components: {
     DoughnutMonthChart
   },
   data() {
     return {}
   },
-  mounted() {
-    this.getData()
-    this.period = 'All'
+  watch: {
+    $route: {
+    immediate: true,
+    handler(to, from) {
+      if(to.name==='Statistics'){
+      this.doOnPageLoad()
+      }
+    },
+  },
   },
   methods: {
     getData() {
       this.$store.dispatch('transaction/getMyRecords').then(res => {})
+    },
+    doOnPageLoad() {
+      this.getData()
+      this.period = 'All'
     }
   },
   computed: {
-    ...mapFields('transaction', [
-      'period',
-      'isLoading'
-    ]),
+    ...mapFields('transaction', ['period', 'isLoading']),
     ...mapGetters('transaction', [
       'transactions',
       'currencySymbol',
@@ -96,11 +129,17 @@ export default {
       'cheapestDay',
       'dearestDay'
     ]),
-    dearestDayLink(){
-      return {path:'/TransactionPeriods/Daily',query:{selectedDate:this.dearestDay.formattedDate}}
+    dearestDayLink() {
+      return {
+        path: '/TransactionPeriods/Daily',
+        query: { selectedDate: this.dearestDay.formattedDate }
+      }
     },
-    cheapestDayLink(){
-      return {path:'/TransactionPeriods/Daily',query:{selectedDate:this.cheapestDay.formattedDate}}
+    cheapestDayLink() {
+      return {
+        path: '/TransactionPeriods/Daily',
+        query: { selectedDate: this.cheapestDay.formattedDate }
+      }
     }
   }
 }
