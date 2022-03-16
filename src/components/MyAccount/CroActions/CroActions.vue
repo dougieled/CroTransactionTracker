@@ -27,6 +27,17 @@
                   >Updated Successfully!</v-alert
                 >
               </v-col>
+               <v-col cols="10" offset="1">
+                <v-btn
+                  block
+                  right
+                  color="red"
+                  @click="resetTransactions"
+                  dark
+                  class="mb-3"
+                  >Reset Transactions</v-btn
+                >
+              </v-col>
               <v-col cols="10" offset="1">
                 <v-btn
                   block
@@ -42,9 +53,21 @@
           </v-card-actions>
         </v-card>
       </v-col>
+       <v-dialog v-model="dialogReset" max-width="500px">
+          <v-card>
+            <v-card-title class="text-h5">Are you sure you want to delete all your transactions?</v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeReset">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="resetTransactionsConfirm">Yes</v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
     </v-row>
 </template>
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'CROActions',
   data() {
@@ -53,7 +76,8 @@ export default {
       isLoading: false,
       utcOffsetLocal: '',
       utcOffsetRules: [v => !!v || 'UTC Offset is required'],
-      showAlert: false
+      showAlert: false,
+      dialogReset: false,
     }
   },
   computed: {
@@ -71,6 +95,7 @@ export default {
     this.utcOffsetLocal = this.utcOffset
   },
   methods: {
+    ...mapActions('transaction', ['removeAllMyTransactions']),
     update() {
       let self = this
       if (this.$refs.updateSettings.validate()) {
@@ -83,6 +108,17 @@ export default {
             }, 5000)
           })
       }
+    },
+    resetTransactions() {
+      this.dialogReset = true
+    },
+    resetTransactionsConfirm() {
+      this.removeAllMyTransactions()
+      this.closeReset()
+    },
+
+    closeReset() {
+      this.dialogReset = false
     }
   }
 }

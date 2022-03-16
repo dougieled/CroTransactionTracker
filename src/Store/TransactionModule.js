@@ -28,6 +28,10 @@ const TransactionModule = {
     },
     updateIsLoading(state, data) {
       state.isLoading = data
+    },
+    removeTransactionByID(state, data){
+      let index = state.transactions.findIndex(x => x.id === data)
+      state.transactions.splice(index, 1)
     }
   },
   actions: {
@@ -55,11 +59,23 @@ const TransactionModule = {
     },
     updateTransactionByID({ commit }, data) {
       transactionManager.updateTransactionByID(data, data.id).then(res => {
-        if (res.status === 200) {
           if (res.status === 200) {
             commit('updateTransactionByID', res.data)
           }
-        }
+      })
+    },
+    removeTransactionByID({ commit }, data) {
+      transactionManager.DeleteTransaction(data.id).then(res => {
+          if (res.status === 200) {
+            commit('removeTransactionByID', data.id)
+          }
+      })
+    },
+    removeAllMyTransactions({ commit }) {
+      transactionManager.DeleteAllMyTransaction().then(res => {
+          if (res.status === 200) {
+            commit('updateTransactions', [])
+          }
       })
     },
     updateTransactions({ commit }, { data, id }) {

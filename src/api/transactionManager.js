@@ -32,7 +32,11 @@ export default {
     return ApiClient.apiGet(route)
   },
   DeleteTransaction(id) {
-    var route = this.GetRequestURL(`/transactions/${id}`)
+    var route = this.GetRequestURL(`/transactions/Delete/${id}`)
+    return ApiClient.apiDelete(route)
+  },
+  DeleteAllMyTransaction() {
+    var route = this.GetRequestURL(`/transactions/ResetTransactions`)
     return ApiClient.apiDelete(route)
   },
 
