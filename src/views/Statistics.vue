@@ -82,6 +82,32 @@
           </v-card-actions>
         </v-card>
       </v-col>
+      <v-col cols="12" class="mt-2 pb-0" sm="12" md="4">
+        <v-card dark>
+          <v-card-title
+            class="text-h7 justify-center"
+            v-text="'Most spent Recurring'"
+          ></v-card-title>
+
+            <most-spent-recurring-table/>
+        </v-card>
+      </v-col>
+       <v-col cols="12" class="mt-2 pb-0" sm="12" md="4">
+        <v-card dark>
+          <v-card-title
+            class="text-h7 justify-center"
+            v-text="'TBC'"
+          ></v-card-title>
+        </v-card>
+      </v-col>
+       <v-col cols="12" class="mt-2 pb-0" sm="12" md="4">
+        <v-card dark>
+          <v-card-title
+            class="text-h7 justify-center"
+            v-text="'TBC'"
+          ></v-card-title>
+        </v-card>
+      </v-col>
       <v-col cols="12" class="pb-8" sm="12" md="4">
         <doughnut-month-chart class="pa-6" />
       </v-col>
@@ -107,11 +133,13 @@ import { mapGetters } from 'vuex'
 import { mapFields } from 'vuex-map-fields'
 import DoughnutMonthChart from '../components/Statistics/Charts/DoughnutMonthChart.vue'
 import BarDailyChart from '../components/Statistics/Charts/BarDailyChart.vue'
+import MostSpentRecurringTable from '../components/Statistics/MostSpentRecurring/MostSpentRecurringTable.vue'
 export default {
   name: 'Statistics',
   components: {
     DoughnutMonthChart,
-    BarDailyChart
+    BarDailyChart,
+    MostSpentRecurringTable
   },
   data() {
     return {}

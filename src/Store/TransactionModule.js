@@ -357,6 +357,36 @@ const TransactionModule = {
         return (prev.total > current.total) ? prev : current
     },[]) //returns object
       return dearestAmount
+    },
+    dearestTransactionsCombined(state, getters) {
+      // this gives an object with dates as keys
+      const groups = getters.transactionNoDeposit.reduce((groups, transaction) => {
+        let description = transaction.description
+        if (!groups[description]) {
+          groups[description] = []
+        }
+        groups[description].push(transaction)
+        return groups
+      }, {})
+      // Edit: to add it in the array format instead
+      const groupArrays = Object.keys(groups).map(description => {
+
+        var sum = 0
+        let selectedGroup = groups[description]
+
+        let amountsTotal = selectedGroup.map(x => x.amountFormatted)
+
+        for (var i = 0; i < amountsTotal.length; i++) {
+          sum += amountsTotal[i]
+        }
+        return {
+          description,
+          total: parseFloat(sum.toFixed(2))
+        }
+      })
+      return groupArrays.sort((a, b) =>
+      b.total > a.total ? 1 : a.total > b.total ? -1 : 0
+    )
     }
   }
 }
