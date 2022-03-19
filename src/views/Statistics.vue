@@ -86,7 +86,7 @@
         <v-card dark class="pb-12">
           <v-card-title
             class="text-h7 justify-center"
-            v-text="'Most spent Recurring'"
+            v-text="'Most Spent Recurring'"
           ></v-card-title>
 
           <most-spent-recurring-table />
