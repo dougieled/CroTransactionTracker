@@ -2,7 +2,7 @@
       <v-data-table
         dense
         :headers="headers"
-        :items="dearestTransactionsCombined"
+        :items="weekdaySpendingAverage"
         :items-per-page="7"
         item-key="id"
         class="elevation-1"
@@ -24,11 +24,11 @@
 import { mapGetters } from 'vuex'
 import { mapFields } from 'vuex-map-fields'
 export default {
-  name: 'MostSpentRecurringTable',
+  name: 'WeekdaySpendingAverage',
   data() {
     return {
       headers: [
-        { text: 'Description', value: 'description' },
+        { text: 'Day', value: 'weekday' },
         { text: 'Total', value: 'total' },
       ]
     }
@@ -37,7 +37,7 @@ export default {
   },
   computed: {
     ...mapFields('transaction', ['isLoading']),
-    ...mapGetters('transaction', ['dearestTransactionsCombined'])
+    ...mapGetters('transaction', ['weekdaySpendingAverage'])
     
   }
 }

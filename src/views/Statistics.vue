@@ -96,8 +96,9 @@
         <v-card dark>
           <v-card-title
             class="text-h7 justify-center"
-            v-text="'TBC'"
+            v-text="'Weekday Spending Average'"
           ></v-card-title>
+          <weekday-spending-average-table/>
         </v-card>
       </v-col>
        <v-col cols="12" class="mt-2 pb-0" sm="12" md="4">
@@ -134,12 +135,14 @@ import { mapFields } from 'vuex-map-fields'
 import DoughnutMonthChart from '../components/Statistics/Charts/DoughnutMonthChart.vue'
 import BarDailyChart from '../components/Statistics/Charts/BarDailyChart.vue'
 import MostSpentRecurringTable from '../components/Statistics/MostSpentRecurring/MostSpentRecurringTable.vue'
+import WeekdaySpendingAverageTable from '../components/Statistics/WeekdaySpendingAverage/WeekdaySpendingAverageTable.vue'
 export default {
   name: 'Statistics',
   components: {
     DoughnutMonthChart,
     BarDailyChart,
-    MostSpentRecurringTable
+    MostSpentRecurringTable,
+    WeekdaySpendingAverageTable
   },
   data() {
     return {}

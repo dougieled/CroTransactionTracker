@@ -387,6 +387,56 @@ const TransactionModule = {
       return groupArrays.sort((a, b) =>
       b.total > a.total ? 1 : a.total > b.total ? -1 : 0
     )
+    },
+    weekdaySpendingAverage(state, getters) {
+      // this gives an object with dates as keys
+      const groups = getters.transactionNoDeposit.reduce((groups, transaction) => {
+        let weekday = transaction.timestamp.format('dddd')
+        console.log(weekday)
+        if (!groups[weekday]) {
+          groups[weekday] = []
+        }
+        groups[weekday].push(transaction)
+        return groups
+      }, {})
+      // Edit: to add it in the array format instead
+      const groupArrays = Object.keys(groups).map(weekday => {
+
+        var sum = 0
+        let selectedGroup = groups[weekday]
+
+        let amountsTotal = selectedGroup.map(x => x.amountFormatted)
+
+        for (var i = 0; i < amountsTotal.length; i++) {
+          sum += amountsTotal[i]
+        }
+        let totalAverage = parseFloat(sum)/7
+        console.log(totalAverage)
+        return {
+          weekday,
+          total: totalAverage.toFixed(2)
+        }
+      })
+
+      const sorter = {
+        "monday": 1,
+        "tuesday": 2,
+        "wednesday": 3,
+        "thursday": 4,
+        "friday": 5,
+        "saturday": 6,
+        "sunday": 7
+      }
+      
+      return groupArrays.sort(function sortByDay(a, b) {
+        let day1 = a.weekday.toLowerCase();
+        let day2 = b.weekday.toLowerCase();
+        return sorter[day1] - sorter[day2];
+      })
+
+    //   return groupArrays.sort((a, b) =>
+    //   b.total > a.total ? 1 : a.total > b.total ? -1 : 0
+    // )
     }
   }
 }
