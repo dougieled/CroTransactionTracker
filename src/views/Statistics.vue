@@ -107,11 +107,18 @@
             class="text-h7 justify-center"
             v-text="'Monthly Spend'"
           ></v-card-title>
-          <doughnut-month-chart class="" />
+          <doughnut-month-chart />
         </v-card>
       </v-col>
       <v-col cols="12" class="pb-8" sm="12" md="12">
-        <bar-daily-chart class="pa-6" />
+         <v-card dark>
+          <v-card-title
+            class="text-h7 justify-center"
+            v-text="'Daily Spend'"
+          ></v-card-title>
+          <bar-daily-chart />
+        </v-card>
+        
       </v-col>
       <v-col cols="12" class="pb-8" md="12"> </v-col>
     </v-row>

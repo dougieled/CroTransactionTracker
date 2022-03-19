@@ -35,7 +35,7 @@
                   @click="resetTransactions"
                   dark
                   class="mb-3"
-                  >Reset Transactions</v-btn
+                  >Reset All Transactions</v-btn
                 >
               </v-col>
               <v-col cols="10" offset="1">

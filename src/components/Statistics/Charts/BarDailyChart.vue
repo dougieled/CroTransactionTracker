@@ -1,16 +1,10 @@
 <template>
-  <v-card dark>
-    <v-card-title
-      class="text-h7 justify-center"
-      v-text="'Daily Spend'"
-    ></v-card-title>
     <bar-example
       ref="daily_spend_chart"
       :chart-data="chartData"
       :options="options"
     >
     </bar-example>
-  </v-card>
 </template>
 
 <script>
