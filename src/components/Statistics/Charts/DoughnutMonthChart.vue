@@ -1,16 +1,10 @@
 <template>
-  <v-card dark>
-    <v-card-title
-      class="text-h7 justify-center"
-      v-text="'Monthly Spend'"
-    ></v-card-title>
     <doughnut-example
       ref="_chart"
       :chart-data="chartData"
       :options="options"
     >
     </doughnut-example>
-  </v-card>
 </template>
 
 <script>

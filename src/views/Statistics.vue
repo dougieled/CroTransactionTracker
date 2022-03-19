@@ -83,7 +83,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" class="mt-2 pb-0" sm="12" md="4">
-        <v-card dark>
+        <v-card dark class="pb-12">
           <v-card-title
             class="text-h7 justify-center"
             v-text="'Most spent Recurring'"
@@ -93,7 +93,7 @@
         </v-card>
       </v-col>
        <v-col cols="12" class="mt-2 pb-0" sm="12" md="4">
-        <v-card dark>
+        <v-card dark class="pb-12">
           <v-card-title
             class="text-h7 justify-center"
             v-text="'Weekday Spending Average'"
@@ -101,18 +101,17 @@
           <weekday-spending-average-table/>
         </v-card>
       </v-col>
-       <v-col cols="12" class="mt-2 pb-0" sm="12" md="4">
-        <v-card dark>
+      <v-col cols="12" class="mt-2 pb-0" sm="12" md="4">
+         <v-card dark>
           <v-card-title
             class="text-h7 justify-center"
-            v-text="'TBC'"
+            v-text="'Monthly Spend'"
           ></v-card-title>
+          <doughnut-month-chart class="" />
         </v-card>
+        
       </v-col>
-      <v-col cols="12" class="pb-8" sm="12" md="4">
-        <doughnut-month-chart class="pa-6" />
-      </v-col>
-      <v-col cols="12" class="pb-8" sm="12" md="8">
+      <v-col cols="12" class="pb-8" sm="12" md="12">
         <bar-daily-chart class="pa-6" />
       </v-col>
       <v-col cols="12" class="pb-8" md="12"> </v-col>
