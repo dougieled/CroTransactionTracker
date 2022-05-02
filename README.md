@@ -1,5 +1,5 @@
-# gaa-score-tracker
-Ensure to update Version number in service-worker.js on each run build
+# cro-transaction-tracker
+Simple Crypto.com Transaction tracker for tracking Visa card transaction. Allows user to check Daily, Weekly, Monthly, Custom spending along with statistics
 ## Project setup
 ```
 npm install
@@ -14,16 +14,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
