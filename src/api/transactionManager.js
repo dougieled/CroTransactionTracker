@@ -1,7 +1,7 @@
 import ApiClient from './helpers/APIClient.js'
 export default {
   GetRequestURL(route) {
-    let url = 'https://mysql-backend.herokuapp.com'
+    let url = 'https://cro-backend.herokuapp.com'
     if(process.env.NODE_ENV == 'development'){
       url = 'http://localhost:4000'
     }
